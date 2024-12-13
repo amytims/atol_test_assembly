@@ -54,8 +54,8 @@ sanger_config_template = Path(
 # hard code for now, config later
 dataset_id = "414129_AusARG"
 hic_motif = "GATC,GANTC,CTNAG,TTAA"
-busco_lineage = "bacteria_odb10"
-mito_species = "Caradrina clavipalpis"
+busco_lineage = "tetrapoda_odb10"
+mito_species = "Caradrina clavipalpis" # FIXME
 mito_min_length = 15000
 mito_code = 5
 

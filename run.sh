@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=atol_test
-#SBATCH --time=0-01
+#SBATCH --time=1-00
 #SBATCH --ntasks=2
 #SBATCH --mem=8g
 #SBATCH --output=sm.slurm.out

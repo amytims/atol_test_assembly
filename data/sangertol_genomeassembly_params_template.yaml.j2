@@ -1,13 +1,11 @@
 dataset:
   id: {{ dataset_id }}
   pacbio:
-    reads: {% for reads in pacbio_reads %}
-        - reads: {{ reads }}
-        {% endfor %}
+    reads:
+        {% for reads in pacbio_reads %}- reads: {{ reads }}{% endfor %}
   HiC:
-    reads: {% for reads in pacbio_reads %}
-        - reads: {{ reads }}
-        {% endfor %}
+    reads: 
+        {% for reads in hic_reads %}- reads: {{ reads }}{% endfor %}        
 hic_motif: {{ hic_motif }}
 hic_aligner: bwamem2
 busco:

@@ -113,7 +113,7 @@ rule format_config_file:
             mito_species=mito_species,
             mito_min_length=mito_min_length,
             mito_code=mito_code,
-            pacbio_reads=input.pacbio_reads,
+            pacbio_reads=[input.pacbio_reads],
         )
         raise ValueError(rendered_yaml)
 
@@ -127,6 +127,8 @@ rule pigz:
         Path(outdir, "reads", "ccs_reads.fasta"),
     output:
         Path(outdir, "reads", "ccs_reads.fasta.gz"),
+    resources:
+        time=30,
     container:
         pigz
     shell:
@@ -144,6 +146,8 @@ rule samtools_fasta:
         pipe(Path(outdir, "reads", "ccs_reads.fasta")),
     log:
         Path(logdir, "samtools_fasta.log"),
+    resources:
+        time=30,
     container:
         samtools
     shell:

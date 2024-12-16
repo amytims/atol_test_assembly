@@ -141,7 +141,6 @@ rule samtools_fasta:
         "samtools fasta "
         "-o {output} "
         "- "
-        "< {input} "
         "2> {log}"
 
 

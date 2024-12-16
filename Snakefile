@@ -130,7 +130,7 @@ rule pigz:
     container:
         pigz
     shell:
-        "pigz -9 <{input} >{output}"
+        "pigz -9 < {input} > {output}"
 
 
 # TODO: combine HiFi reads as follows
@@ -152,6 +152,7 @@ rule samtools_fasta:
         "| "
         "samtools fasta "
         "- "
+        ">> {output} "
         "2> {log}"
 
 

@@ -47,6 +47,8 @@ def get_apikey():
 
 
 outdir = Path("output")
+logdir = Path(outdir, "logs")
+
 sanger_config_template = Path(
     "data", "sangertol_genomeassembly_params_template.yaml.j2"
 )
@@ -55,10 +57,12 @@ sanger_config_template = Path(
 dataset_id = "414129_AusARG"
 hic_motif = "GATC,GANTC,CTNAG,TTAA"
 busco_lineage = "tetrapoda_odb10"
-mito_species = "Caradrina clavipalpis" # FIXME
+mito_species = "Heteronotia binoei"  # FIXME
 mito_min_length = 15000
 mito_code = 5
 
+# containers
+samtools = "docker://quay.io/biocontainers/samtools:1.3.1--h60f3df9_12"
 
 ########
 # MAIN #
@@ -82,12 +86,20 @@ data_file_dict = {
 # RULES #
 #########
 
+
 # TARGET IS AT THE END
+def get_hifi_readfiles(wildcards):
+    return [
+        Path(outdir, "reads", filename)
+        for filename, url in data_file_dict.items()
+        if filename.endswith(".ccs.bam")
+    ]
 
 
 rule format_config_file:
     input:
         sanger_config_template=sanger_config_template,
+        pacbio_reads=Path(outdir, "reads", "ccs_reads.fasta.gz"),
     output:
         Path(outdir, "config", "sangertol_genomeassembly_params.yaml"),
     run:
@@ -100,8 +112,61 @@ rule format_config_file:
             mito_species=mito_species,
             mito_min_length=mito_min_length,
             mito_code=mito_code,
+            pacbio_reads=input.pacbio_reads,
         )
         raise ValueError(rendered_yaml)
+
+
+# TODO: combine Hi-C reads as follows:
+# contains the list (-reads) of the HiC reads in the indexed CRAM format.
+
+
+# TODO: combine HiFi reads as follows
+# contains the list (-reads) of the HiFi reads in FASTA (or gzipped FASTA)
+# format in. The pipeline implementation is based on an assumption that reads
+# have gone through adapter/barcode checks.
+rule samtools_fasta:
+    input:
+        Path(outdir, "reads", "samtools_collate.bam"),
+    output:
+        Path(outdir, "reads", "ccs_reads.fasta.gz"),
+    log:
+        Path(logdir, "samtools_fasta.log"),
+    shell:
+        "samtools fasta "
+        "-o {output} "
+        "{input} "
+        "2> {log}"
+
+
+rule samtools_collate:
+    input:
+        Path(outdir, "reads", "samtools_cat.bam"),
+    output:
+        pipe(Path(outdir, "reads", "samtools_collate.bam")),
+    log:
+        Path(logdir, "samtools_collate.log"),
+    shell:
+        "samtools collate "
+        "-O "
+        "--output-fmt SAM "
+        "{input} "
+        ">> {output} "
+        "2> {log}"
+
+
+rule samtools_cat:
+    input:
+        get_hifi_readfiles,
+    output:
+        pipe(Path(outdir, "reads", "samtools_cat.bam")),
+    log:
+        Path(logdir, "samtools_cat.log"),
+    shell:
+        "samtools cat "
+        "{input} "
+        ">> {output} "
+        "2> {log}"
 
 
 rule download_from_bpa:
@@ -121,5 +186,5 @@ rule download_from_bpa:
 rule target:
     default_target: True
     input:
-        expand(rules.download_from_bpa.output, readfile=data_file_dict.keys()),
+        # expand(rules.download_from_bpa.output, readfile=data_file_dict.keys()),
         rules.format_config_file.output,

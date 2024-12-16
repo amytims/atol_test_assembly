@@ -62,7 +62,7 @@ mito_min_length = 15000
 mito_code = 5
 
 # containers
-samtools = "docker://quay.io/biocontainers/samtools:1.3.1--h60f3df9_12"
+samtools = "docker://quay.io/biocontainers/samtools:1.21--h96c455f_1"
 
 ########
 # MAIN #

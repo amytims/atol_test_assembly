@@ -127,7 +127,7 @@ rule format_config_file:
 # have gone through adapter/barcode checks.
 rule samtools_fasta:
     input:
-        Path(outdir, "reads", "samtools_cat.bam"),
+        get_hifi_readfiles,
     output:
         Path(outdir, "reads", "ccs_reads.fasta.gz"),
     log:
@@ -135,26 +135,13 @@ rule samtools_fasta:
     container:
         samtools
     shell:
+        "samtools cat "
+        "{input} "
+        "| "
         "samtools fasta "
         "-o {output} "
         "- "
         "< {input} "
-        "2> {log}"
-
-
-rule samtools_cat:
-    input:
-        get_hifi_readfiles,
-    output:
-        pipe(Path(outdir, "reads", "samtools_cat.bam")),
-    log:
-        Path(logdir, "samtools_cat.log"),
-    container:
-        samtools
-    shell:
-        "samtools cat "
-        "{input} "
-        ">> {output} "
         "2> {log}"
 
 

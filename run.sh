@@ -10,6 +10,7 @@
 # Dependencies
 module load Apptainer/1.3.3
 module load Nextflow/23.04.2
+module load Miniconda3/23.10.0-1
 
 # Application specific commands:
 printf "TMPDIR: %s\n" "${TMPDIR}"

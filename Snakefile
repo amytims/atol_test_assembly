@@ -137,7 +137,8 @@ rule samtools_fasta:
     shell:
         "samtools fasta "
         "-o {output} "
-        "{input} "
+        "- "
+        "< {input} "
         "2> {log}"
 
 
@@ -154,7 +155,8 @@ rule samtools_collate:
         "samtools collate "
         "-O "
         "--output-fmt SAM "
-        "{input} "
+        "- "
+        "< {input} "
         ">> {output} "
         "2> {log}"
 

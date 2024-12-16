@@ -14,9 +14,8 @@ module load Apptainer/1.3.3
 printf "TMPDIR: %s\n" "${TMPDIR}"
 
 snakemake \
-	-n \
 	--profile spartan_v8 \
 	--retries 0 \
 	--keep-going \
-	--cores 128 \
+	--cores 12 \
 	--local-cores 2

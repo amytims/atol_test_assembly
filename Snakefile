@@ -132,6 +132,8 @@ rule samtools_fasta:
         Path(outdir, "reads", "ccs_reads.fasta.gz"),
     log:
         Path(logdir, "samtools_fasta.log"),
+    container:
+        samtools
     shell:
         "samtools fasta "
         "-o {output} "
@@ -146,6 +148,8 @@ rule samtools_collate:
         pipe(Path(outdir, "reads", "samtools_collate.bam")),
     log:
         Path(logdir, "samtools_collate.log"),
+    container:
+        samtools
     shell:
         "samtools collate "
         "-O "
@@ -162,6 +166,8 @@ rule samtools_cat:
         pipe(Path(outdir, "reads", "samtools_cat.bam")),
     log:
         Path(logdir, "samtools_cat.log"),
+    container:
+        samtools
     shell:
         "samtools cat "
         "{input} "

@@ -127,7 +127,7 @@ rule format_config_file:
 # have gone through adapter/barcode checks.
 rule samtools_fasta:
     input:
-        Path(outdir, "reads", "samtools_collate.bam"),
+        Path(outdir, "reads", "samtools_cat.bam"),
     output:
         Path(outdir, "reads", "ccs_reads.fasta.gz"),
     log:
@@ -139,25 +139,6 @@ rule samtools_fasta:
         "-o {output} "
         "- "
         "< {input} "
-        "2> {log}"
-
-
-rule samtools_collate:
-    input:
-        Path(outdir, "reads", "samtools_cat.bam"),
-    output:
-        pipe(Path(outdir, "reads", "samtools_collate.bam")),
-    log:
-        Path(logdir, "samtools_collate.log"),
-    container:
-        samtools
-    shell:
-        "samtools collate "
-        "-O "
-        "--output-fmt SAM "
-        "- "
-        "< {input} "
-        ">> {output} "
         "2> {log}"
 
 

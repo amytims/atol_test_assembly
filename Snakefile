@@ -63,6 +63,7 @@ mito_code = 5
 
 # containers
 samtools = "docker://quay.io/biocontainers/samtools:1.21--h96c455f_1"
+pigz = "docker://quay.io/biocontainers/pigz:2.8"
 
 ########
 # MAIN #
@@ -121,6 +122,17 @@ rule format_config_file:
 # contains the list (-reads) of the HiC reads in the indexed CRAM format.
 
 
+rule pigz:
+    input:
+        Path(outdir, "reads", "ccs_reads.fasta"),
+    output:
+        Path(outdir, "reads", "ccs_reads.fasta.gz"),
+    container:
+        pigz
+    shell:
+        "pigz -9 <{input} >{output}"
+
+
 # TODO: combine HiFi reads as follows
 # contains the list (-reads) of the HiFi reads in FASTA (or gzipped FASTA)
 # format in. The pipeline implementation is based on an assumption that reads
@@ -129,7 +141,7 @@ rule samtools_fasta:
     input:
         get_hifi_readfiles,
     output:
-        Path(outdir, "reads", "ccs_reads.fasta.gz"),
+        pipe(Path(outdir, "reads", "ccs_reads.fasta")),
     log:
         Path(logdir, "samtools_fasta.log"),
     container:
@@ -139,7 +151,6 @@ rule samtools_fasta:
         "{input} "
         "| "
         "samtools fasta "
-        "-o {output} "
         "- "
         "2> {log}"
 

@@ -15,11 +15,6 @@ from jinja2 import Template
 requests_get = requests.get
 
 
-def get_url(wildcards):
-    my_url = data_file_dict[wildcards.readfile]
-    return storage.http(my_url)
-
-
 def requests_get_with_auth_header(url, **kwargs):
     if "headers" not in kwargs:
         kwargs["headers"] = {}
@@ -28,6 +23,9 @@ def requests_get_with_auth_header(url, **kwargs):
 
 
 requests.get = requests_get_with_auth_header
+
+
+# Normal functions
 
 
 def get_apikey():
@@ -39,6 +37,19 @@ def get_apikey():
             "See  https://github.com/snakemake/snakemake-storage-plugin-http/issues/27."
         )
     return apikey
+
+
+def get_hifi_readfiles(wildcards):
+    return [
+        Path(outdir, "reads", filename)
+        for filename, url in data_file_dict.items()
+        if filename.endswith(".ccs.bam")
+    ]
+
+
+def get_url(wildcards):
+    my_url = data_file_dict[wildcards.readfile]
+    return storage.http(my_url)
 
 
 ###########
@@ -88,14 +99,7 @@ data_file_dict = {
 # RULES #
 #########
 
-
 # TARGET IS AT THE END
-def get_hifi_readfiles(wildcards):
-    return [
-        Path(outdir, "reads", filename)
-        for filename, url in data_file_dict.items()
-        if filename.endswith(".ccs.bam")
-    ]
 
 
 rule format_config_file:
@@ -118,7 +122,8 @@ rule format_config_file:
             pacbio_reads=[input.pacbio_reads],
             hic_reads=[input.hic_reads],
         )
-        raise ValueError(rendered_yaml)
+        with open(output, "w") as f:
+            f.write(rendered_yaml)
 
 
 # TODO: combine Hi-C reads as follows:
@@ -228,5 +233,4 @@ rule download_from_bpa:
 rule target:
     default_target: True
     input:
-        # expand(rules.download_from_bpa.output, readfile=data_file_dict.keys()),
         rules.format_config_file.output,

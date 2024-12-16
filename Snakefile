@@ -62,6 +62,7 @@ mito_min_length = 15000
 mito_code = 5
 
 # containers
+bbmap = "docker://quay.io/biocontainers/bbmap:39.13--he5f24ec_1"
 samtools = "docker://quay.io/biocontainers/samtools:1.21--h96c455f_1"
 pigz = "docker://quay.io/biocontainers/pigz:2.8"
 
@@ -101,6 +102,7 @@ rule format_config_file:
     input:
         sanger_config_template=sanger_config_template,
         pacbio_reads=Path(outdir, "reads", "ccs_reads.fasta.gz"),
+        hic_reads=Path(outdir, "reads", "hic.cram"),
     output:
         Path(outdir, "config", "sangertol_genomeassembly_params.yaml"),
     run:
@@ -114,12 +116,62 @@ rule format_config_file:
             mito_min_length=mito_min_length,
             mito_code=mito_code,
             pacbio_reads=[input.pacbio_reads],
+            hic_reads=[input.hic_reads],
         )
         raise ValueError(rendered_yaml)
 
 
 # TODO: combine Hi-C reads as follows:
 # contains the list (-reads) of the HiC reads in the indexed CRAM format.
+rule bam_to_cram:
+    input:
+        Path(outdir, "reads", "hic.bam"),
+    output:
+        Path(outdir, "reads", "hic.cram"),
+    log:
+        Path(logdir, "bam_to_cram.log"),
+    resources:
+        time=120,
+    container:
+        samtools
+    shell:
+        "samtools view "
+        "-C "
+        "-o {output} "
+        "- "
+        "< {input} "
+        "2> {log}"
+
+
+rule reformat_hic:
+    input:
+        r1=Path(
+            outdir, "reads", "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R1_001.fastq.gz"
+        ),
+        r2=Path(
+            outdir, "reads", "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R2_001.fastq.gz"
+        ),
+    output:
+        pipe(Path(outdir, "reads", "hic.bam")),
+    log:
+        Path(logdir, "reformat_hic.log"),
+    resources:
+        time=120,
+    container:
+        bbmap
+    shell:
+        "reformat.sh "
+        "in={input.r1} "
+        "in2={input.r2} "
+        "out=stdout.bam "
+        ">> {output} "
+        "2> {log}"
+
+
+# Combine HiFi reads as follows:
+# contains the list (-reads) of the HiFi reads in FASTA (or gzipped FASTA)
+# format in. The pipeline implementation is based on an assumption that reads
+# have gone through adapter/barcode checks.
 
 
 rule pigz:
@@ -127,18 +179,17 @@ rule pigz:
         Path(outdir, "reads", "ccs_reads.fasta"),
     output:
         Path(outdir, "reads", "ccs_reads.fasta.gz"),
+    threads: 8
     resources:
-        time=30,
+        time=120,
     container:
         pigz
     shell:
-        "pigz -9 < {input} > {output}"
+        "pigz -9 "
+        "--processes {threads} "
+        "< {input} > {output}"
 
 
-# TODO: combine HiFi reads as follows
-# contains the list (-reads) of the HiFi reads in FASTA (or gzipped FASTA)
-# format in. The pipeline implementation is based on an assumption that reads
-# have gone through adapter/barcode checks.
 rule samtools_fasta:
     input:
         get_hifi_readfiles,
@@ -147,7 +198,7 @@ rule samtools_fasta:
     log:
         Path(logdir, "samtools_fasta.log"),
     resources:
-        time=30,
+        time=120,
     container:
         samtools
     shell:

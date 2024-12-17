@@ -26,6 +26,7 @@ nextflow run \
 	sanger-tol/genomeassembly \
 	--input output/config/sangertol_genomeassembly_params.yaml \
 	--outdir output/sanger_tol \
+	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	-resume \
 	-profile apptainer,spartan \
 	-r 0.10.0

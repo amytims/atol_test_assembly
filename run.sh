@@ -10,7 +10,6 @@
 # Dependencies
 module load Apptainer/1.3.3
 module load Nextflow/23.04.2
-module load Miniconda3/23.10.0-1
 
 # Application specific commands:
 printf "TMPDIR: %s\n" "${TMPDIR}"
@@ -20,4 +19,11 @@ snakemake \
 	--retries 0 \
 	--keep-going \
 	--cores 12 \
-	--local-cores 2
+	--local-cores 2 \
+	format_config_file
+
+nextflow run \
+	sanger-tol/genomeassembly \
+	--input output/config/sangertol_genomeassembly_params.yaml \
+	--outdir output/sanger_tol \
+	-profile apptainer,spartan

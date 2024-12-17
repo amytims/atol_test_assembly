@@ -102,20 +102,20 @@ data_file_dict = {
 # TARGET IS AT THE END
 
 
-# Run the pipeline
-rule sanger_tol_genomeassembly:
-    input:
-        input=Path(outdir, "config", "sangertol_genomeassembly_params.yaml"),
-    output:
-        report="results/multiqc/broadPeak/multiqc_report.html",
-    params:
-        pipeline="sanger-tol/genomeassembly",
-        revision="0.10.0",
-        profile=["singularity", "spartan"],
-        outdir=lambda wildcards, output: str(Path(output.report).parents[-2]),
-    handover: True
-    wrapper:
-        "v5.5.0-8-gb18ec90/utils/nextflow"
+# # Run the pipeline
+# rule sanger_tol_genomeassembly:
+#     input:
+#         input=Path(outdir, "config", "sangertol_genomeassembly_params.yaml"),
+#     output:
+#         report="results/multiqc/broadPeak/multiqc_report.html",
+#     params:
+#         pipeline="sanger-tol/genomeassembly",
+#         revision="0.10.0",
+#         profile=["singularity", "spartan"],
+#         outdir=lambda wildcards, output: str(Path(output.report).parents[-2]),
+#     handover: True
+#     wrapper:
+#         "v5.5.0-8-gb18ec90/utils/nextflow"
 
 
 # Set up the pipeline
@@ -251,4 +251,4 @@ rule target:
     default_target: True
     input:
         rules.format_config_file.output,
-        rules.sanger_tol_genomeassembly.output,
+        # rules.sanger_tol_genomeassembly.output,

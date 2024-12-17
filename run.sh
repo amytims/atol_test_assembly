@@ -16,6 +16,7 @@ module load Nextflow/24.10.2
 printf "TMPDIR: %s\n" "${TMPDIR}"
 
 export APPTAINER_CACHE="/data/scratch/projects/punim1712"
+export NXF_APPTAINER_CACHEDIR="${APPTAINER_CACHE}"
 
 snakemake \
 	--profile spartan_v8 \

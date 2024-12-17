@@ -26,5 +26,6 @@ nextflow run \
 	sanger-tol/genomeassembly \
 	--input output/config/sangertol_genomeassembly_params.yaml \
 	--outdir output/sanger_tol \
+	-resume \
 	-profile apptainer,spartan \
 	-r 0.10.0

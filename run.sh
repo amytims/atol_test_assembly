@@ -15,6 +15,8 @@ module load Nextflow/24.10.2
 # Application specific commands:
 printf "TMPDIR: %s\n" "${TMPDIR}"
 
+export APPTAINER_CACHE="/data/scratch/projects/punim1712"
+
 snakemake \
 	--profile spartan_v8 \
 	--retries 0 \
@@ -23,8 +25,9 @@ snakemake \
 	--local-cores 2 \
 	format_config_file
 
-nextflow run \
+nextflow \
 	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
+	run \
 	sanger-tol/genomeassembly \
 	--input output/config/sangertol_genomeassembly_params.yaml \
 	--outdir output/sanger_tol \

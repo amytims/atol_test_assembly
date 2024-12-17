@@ -8,6 +8,7 @@
 #SBATCH --error=sm.slurm.err
 
 # Dependencies
+module load Python/3.11.3
 module load Apptainer/1.3.3
 module load Nextflow/24.10.2
 
@@ -23,10 +24,10 @@ snakemake \
 	format_config_file
 
 nextflow run \
+	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	sanger-tol/genomeassembly \
 	--input output/config/sangertol_genomeassembly_params.yaml \
 	--outdir output/sanger_tol \
-	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	-dump-hashes json \
 	-resume \
 	-profile apptainer,spartan \

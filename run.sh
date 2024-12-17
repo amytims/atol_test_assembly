@@ -9,7 +9,7 @@
 
 # Dependencies
 module load Apptainer/1.3.3
-module load Nextflow/23.04.2
+module load Nextflow/24.10.2
 
 # Application specific commands:
 printf "TMPDIR: %s\n" "${TMPDIR}"

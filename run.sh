@@ -26,6 +26,7 @@ snakemake \
 	--local-cores 2 \
 	format_config_file
 
+# Problems with the apptainer profile, try "singularity" instead.
 nextflow \
 	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	run \

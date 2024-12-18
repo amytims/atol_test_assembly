@@ -35,5 +35,5 @@ nextflow \
 	--outdir output/sanger_tol \
 	-dump-hashes json \
 	-resume \
-	-profile apptainer,spartan \
+	-profile singularity,spartan \
 	-r 0.10.0

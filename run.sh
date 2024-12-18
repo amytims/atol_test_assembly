@@ -17,6 +17,7 @@ printf "TMPDIR: %s\n" "${TMPDIR}"
 
 export APPTAINER_CACHE="/data/scratch/projects/punim1712"
 export NXF_APPTAINER_CACHEDIR="${APPTAINER_CACHE}"
+export NXF_SINGULARITY_CACHEDIR="${APPTAINER_CACHE}"
 
 snakemake \
 	--profile spartan_v8 \

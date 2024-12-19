@@ -24,8 +24,7 @@ snakemake \
 	--retries 0 \
 	--keep-going \
 	--cores 12 \
-	--local-cores 2 \
-	format_config_file
+	--local-cores 2
 
 # Pull the containers into the cache before trying to launch the workflow.
 nextflow inspect \

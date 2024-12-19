@@ -24,7 +24,8 @@ snakemake \
 	--retries 0 \
 	--keep-going \
 	--cores 12 \
-	--local-cores 2
+	--local-cores 2 \
+	output/reads/hic.cram # FIXME
 
 # Pull the containers into the cache before trying to launch the workflow.
 nextflow inspect \

@@ -143,7 +143,7 @@ rule format_config_file:
             f.write(rendered_yaml)
 
 
-# TODO: combine Hi-C reads as follows:
+# Combine Hi-C reads as follows:
 # contains the list (-reads) of the HiC reads in the indexed CRAM format.
 rule bam_to_cram:
     input:
@@ -162,7 +162,11 @@ rule bam_to_cram:
         "-o {output} "
         "- "
         "< {input} "
-        "2> {log}"
+        "2> {log} "
+        "&& "
+        "samtools index "
+        "{output} "
+        "2>> {log} "
 
 
 rule reformat_hic:

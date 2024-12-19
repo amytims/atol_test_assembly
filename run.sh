@@ -27,9 +27,17 @@ snakemake \
 	--local-cores 2 \
 	format_config_file
 
+# Pull the containers into the cache before trying to launch the workflow.
+nextflow inspect \
+	-concretize sanger-tol/genomeassembly \
+	--input output/config/sangertol_genomeassembly_params.yaml \
+	--outdir output/sanger_tol \
+	-profile singularity,spartan \
+	-r 0.10.0
+
 # Note, it's tempting to use the apptainer profile, but the nf-core (and some
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
-# 'singularity'` that prevents using the right URL with apptainer. 
+# 'singularity'` that prevents using the right URL with apptainer.
 nextflow \
 	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	run \

@@ -15,17 +15,16 @@ module load Nextflow/24.10.2
 # Application specific commands:
 printf "TMPDIR: %s\n" "${TMPDIR}"
 
-export APPTAINER_CACHE="/data/scratch/projects/punim1712"
-export NXF_APPTAINER_CACHEDIR="${APPTAINER_CACHE}"
-export NXF_SINGULARITY_CACHEDIR="${APPTAINER_CACHE}"
+export APPTAINER_CACHE="/data/scratch/projects/punim1712/.apptainer"
+export NXF_APPTAINER_CACHEDIR="${APPTAINER_CACHE}/library"
+export NXF_SINGULARITY_CACHEDIR="${APPTAINER_CACHE}/library"
 
 snakemake \
 	--profile spartan_v8 \
 	--retries 0 \
 	--keep-going \
 	--cores 12 \
-	--local-cores 2 \
-	output/reads/hic.cram # FIXME
+	--local-cores 2
 
 # Pull the containers into the cache before trying to launch the workflow.
 nextflow inspect \
@@ -44,7 +43,6 @@ nextflow \
 	sanger-tol/genomeassembly \
 	--input output/config/sangertol_genomeassembly_params.yaml \
 	--outdir output/sanger_tol \
-	-dump-hashes json \
 	-resume \
 	-profile singularity,spartan \
 	-r 0.10.0

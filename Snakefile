@@ -149,7 +149,8 @@ rule bam_to_cram:
     input:
         Path(outdir, "reads", "hic.bam"),
     output:
-        Path(outdir, "reads", "hic.cram"),
+        cram=Path(outdir, "reads", "hic.cram"),
+        index=Path(outdir, "reads", "hic.cram.crai"),
     log:
         Path(logdir, "bam_to_cram.log"),
     resources:
@@ -159,13 +160,13 @@ rule bam_to_cram:
     shell:
         "samtools view "
         "-C "
-        "-o {output} "
+        "-o {output.cram} "
         "- "
         "< {input} "
         "2> {log} "
         "&& "
         "samtools index "
-        "{output} "
+        "{output.cram} "
         "2>> {log} "
 
 

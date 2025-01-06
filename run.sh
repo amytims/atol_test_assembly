@@ -26,8 +26,6 @@ snakemake \
 	--cores 12 \
 	--local-cores 2
 
-exit 0
-
 # Pull the containers into the cache before trying to launch the workflow.
 nextflow inspect \
 	-concretize sanger-tol/genomeassembly \

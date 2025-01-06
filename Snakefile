@@ -68,7 +68,7 @@ sanger_config_template = Path(
 dataset_id = "414129_AusARG"
 hic_motif = "GATC,GANTC,CTNAG,TTAA"
 busco_lineage = "tetrapoda_odb10"
-mito_species = "Heteronotia binoei"  # FIXME
+mito_species = "Heteronotia binoei"
 mito_min_length = 15000
 mito_code = 5
 
@@ -159,7 +159,7 @@ rule samtools_import:
         cram=Path(outdir, "reads", "hic.cram"),
         index=Path(outdir, "reads", "hic.cram.crai"),
     log:
-        Path(logdir, "bam_to_cram.log"),
+        Path(logdir, "samtools_import.log"),
     resources:
         time=120,
     container:

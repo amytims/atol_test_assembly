@@ -48,7 +48,7 @@ nextflow inspect \
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
 # 'singularity'` that prevents using the right URL with apptainer.
 nextflow \
-	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
+	-log "nextflow_logs/nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	run \
 	sanger-tol/genomeassembly \
 	--input results/config/sangertol_genomeassembly_params.yaml \

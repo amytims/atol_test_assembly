@@ -72,7 +72,9 @@ rule format_config_file:
         pacbio_reads=Path("results", "reads", "ccs_reads.fasta.gz"),
         hic_reads=Path("results", "reads", "hic.cram"),
     output:
-        rendered_yaml=Path("results", "config", "sangertol_genomeassembly_params.yaml"),
+        rendered_yaml=local(
+            Path("results", "config", "sangertol_genomeassembly_params.yaml")
+        ),
     run:
         with open(input.sanger_config_template) as f:
             template = Template(f.read())

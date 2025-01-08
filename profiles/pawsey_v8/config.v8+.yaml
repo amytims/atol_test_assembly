@@ -31,7 +31,7 @@ rerun-incomplete: true
 printshellcmds: true
 use-singularity: true
 use-conda: False
-singularity-args: "-B $PWD,$TMPDIR,/data \
+singularity-args: "-B $PWD,$TMPDIR,/scratch \
   --nv \
   -H $(mktemp -d) \
   --pwd $PWD \

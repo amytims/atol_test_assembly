@@ -23,6 +23,7 @@ printf "TMPDIR: %s\n" "${TMPDIR}"
 
 if [ -z "${SINGULARITY_CACHEDIR}" ]; then
 	export SINGULARITY_CACHEDIR=/software/projects/pawsey1132/tharrop/.singularity
+	export APPTAINER_CACHEDIR="${SINGULARITY_CACHEDIR}"
 fi
 
 export NXF_APPTAINER_CACHEDIR="${SINGULARITY_CACHEDIR}/library"

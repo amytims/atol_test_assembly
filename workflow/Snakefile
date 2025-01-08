@@ -1,47 +1,23 @@
 #!/usr/bin/env python3
 
-from pathlib import Path
-import os
-import requests
 from jinja2 import Template
+from pathlib import Path
+
+
+include: "rules/common.smk"
+
+
+configfile: "config/config.yaml"
+
 
 #############
 # FUNCTIONS #
 #############
 
-# This is a hack. Redefine requests.get to include the Authorization header.
-# snakemake_storage_plugin_http only supports predifined AuthBase classes, see
-# https://github.com/snakemake/snakemake-storage-plugin-http/issues/27
-requests_get = requests.get
-
-
-def requests_get_with_auth_header(url, **kwargs):
-    if "headers" not in kwargs:
-        kwargs["headers"] = {}
-    kwargs["headers"]["Authorization"] = apikey
-    return requests_get(url, **kwargs)
-
-
-requests.get = requests_get_with_auth_header
-
-
-# Normal functions
-
-
-def get_apikey():
-    apikey = os.getenv("BPI_APIKEY")
-    if not apikey:
-        raise ValueError(
-            "Set the BPI_APIKEY environment variable. "
-            "This Snakefile uses a hack to pass the API key to `requests.get`. "
-            "See  https://github.com/snakemake/snakemake-storage-plugin-http/issues/27."
-        )
-    return apikey
-
 
 def get_hifi_readfiles(wildcards):
     return [
-        Path(outdir, "reads", filename)
+        Path("resources", "reads", filename)
         for filename, url in data_file_dict.items()
         if filename.endswith(".ccs.bam")
     ]
@@ -52,36 +28,11 @@ def get_url(wildcards):
     return storage.http(my_url)
 
 
-###########
-# GLOBALS #
-###########
-
-
-outdir = Path("output")
-logdir = Path(outdir, "logs")
-
-sanger_config_template = Path(
-    "data", "sangertol_genomeassembly_params_template.yaml.j2"
-)
-
-# hard code for now, config later
-dataset_id = "414129_AusARG"
-hic_motif = "GATC,GANTC,CTNAG,TTAA"
-busco_lineage = "tetrapoda_odb10"
-mito_species = "Heteronotia binoei"
-mito_min_length = 15000
-mito_code = 5
-
-# containers
-bbmap = "docker://quay.io/biocontainers/bbmap:39.13--he5f24ec_1"
-samtools = "docker://quay.io/biocontainers/samtools:1.21--h96c455f_1"
-pigz = "docker://quay.io/biocontainers/pigz:2.8"
-
 ########
 # MAIN #
 ########
 
-apikey = get_apikey()
+globals().update(config)
 
 # this is from teh bpa_dataportal_downloads project
 # results of a search for query = {"sample_id": '102.100.100/411655'}
@@ -122,10 +73,10 @@ data_file_dict = {
 rule format_config_file:
     input:
         sanger_config_template=sanger_config_template,
-        pacbio_reads=Path(outdir, "reads", "ccs_reads.fasta.gz"),
-        hic_reads=Path(outdir, "reads", "hic.cram"),
+        pacbio_reads=Path("results", "reads", "ccs_reads.fasta.gz"),
+        hic_reads=Path("results", "reads", "hic.cram"),
     output:
-        rendered_yaml=Path(outdir, "config", "sangertol_genomeassembly_params.yaml"),
+        rendered_yaml=Path("results", "config", "sangertol_genomeassembly_params.yaml"),
     run:
         with open(input.sanger_config_template) as f:
             template = Template(f.read())
@@ -150,20 +101,24 @@ rule format_config_file:
 rule samtools_import:
     input:
         r1=Path(
-            outdir, "reads", "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R1_001.fastq.gz"
+            "resources",
+            "reads",
+            "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R1_001.fastq.gz",
         ),
         r2=Path(
-            outdir, "reads", "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R2_001.fastq.gz"
+            "resources",
+            "reads",
+            "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R2_001.fastq.gz",
         ),
     output:
-        cram=Path(outdir, "reads", "hic.cram"),
-        index=Path(outdir, "reads", "hic.cram.crai"),
+        cram=Path("results", "reads", "hic.cram"),
+        index=Path("results", "reads", "hic.cram.crai"),
     log:
-        Path(logdir, "samtools_import.log"),
+        Path("logs", "samtools_import.log"),
     resources:
         time=120,
     container:
-        samtools
+        get_container("samtools")
     shell:
         "samtools import "
         "-@{threads} "
@@ -185,14 +140,14 @@ rule samtools_import:
 
 rule pigz:
     input:
-        Path(outdir, "reads", "ccs_reads.fasta"),
+        Path("results", "reads", "ccs_reads.fasta"),
     output:
-        Path(outdir, "reads", "ccs_reads.fasta.gz"),
+        Path("results", "reads", "ccs_reads.fasta.gz"),
     threads: 8
     resources:
         time=120,
     container:
-        pigz
+        get_container("pigz")
     shell:
         "pigz -9 "
         "--processes {threads} "
@@ -203,13 +158,13 @@ rule samtools_fasta:
     input:
         get_hifi_readfiles,
     output:
-        pipe(Path(outdir, "reads", "ccs_reads.fasta")),
+        pipe(Path("results", "reads", "ccs_reads.fasta")),
     log:
-        Path(logdir, "samtools_fasta.log"),
+        Path("logs", "samtools_fasta.log"),
     resources:
         time=120,
     container:
-        samtools
+        get_container("samtools")
     shell:
         "samtools cat "
         "{input} "
@@ -224,7 +179,7 @@ rule download_from_bpa:
     input:
         get_url,
     output:
-        Path(outdir, "reads", "{readfile}"),
+        Path("resources", "reads", "{readfile}"),
     shell:
         "cp {input} {output}"
 
@@ -238,4 +193,3 @@ rule target:
     default_target: True
     input:
         rules.format_config_file.output,
-        # rules.sanger_tol_genomeassembly.output,

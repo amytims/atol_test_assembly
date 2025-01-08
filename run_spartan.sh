@@ -20,7 +20,7 @@ export NXF_APPTAINER_CACHEDIR="${APPTAINER_CACHE}/library"
 export NXF_SINGULARITY_CACHEDIR="${APPTAINER_CACHE}/library"
 
 snakemake \
-	--profile spartan_v8 \
+	--profile profiles/spartan_v8 \
 	--retries 0 \
 	--keep-going \
 	--cores 12 \
@@ -29,8 +29,8 @@ snakemake \
 # Pull the containers into the cache before trying to launch the workflow.
 nextflow inspect \
 	-concretize sanger-tol/genomeassembly \
-	--input output/config/sangertol_genomeassembly_params.yaml \
-	--outdir output/sanger_tol \
+	--input results/config/sangertol_genomeassembly_params.yaml \
+	--outdir results/sanger_tol \
 	-profile singularity,spartan \
 	-r 0.10.0
 
@@ -41,8 +41,8 @@ nextflow \
 	-log "nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	run \
 	sanger-tol/genomeassembly \
-	--input output/config/sangertol_genomeassembly_params.yaml \
-	--outdir output/sanger_tol \
+	--input results/config/sangertol_genomeassembly_params.yaml \
+	--outdir results/sanger_tol \
 	-resume \
 	-profile singularity,spartan \
 	-r 0.10.0

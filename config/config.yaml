@@ -1,0 +1,21 @@
+---
+sanger_config_template: resources/sangertol_genomeassembly_params_template.yaml.j2
+dataset_id: 414129_AusARG
+hic_motif: "GATC,GANTC,CTNAG,TTAA"
+busco_lineage: tetrapoda_odb10
+mito_species: Heteronotia binoei
+mito_min_length: 15000
+mito_code: 5
+containers:
+  bbmap:
+    prefix: docker
+    url: quay.io/biocontainers/bbmap
+    tag: 39.13--he5f24ec_1
+  samtools:
+    prefix: docker
+    url: quay.io/biocontainers/samtools
+    tag: 1.21--h96c455f_1
+  pigz:
+    prefix: docker
+    url: quay.io/biocontainers/pigz
+    tag: 2.8

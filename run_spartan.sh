@@ -13,6 +13,8 @@ module load Apptainer/1.3.3
 module load Nextflow/24.10.2
 
 # Application specific commands:
+set -eux
+
 printf "TMPDIR: %s\n" "${TMPDIR}"
 
 export APPTAINER_CACHE="/data/scratch/projects/punim1712/.apptainer"

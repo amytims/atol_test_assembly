@@ -38,7 +38,7 @@ singularity-args: "-B $PWD,$TMPDIR,/data \
   --containall --cleanenv --writable-tmpfs"
 # see https://snakemake.github.io/snakemake-plugin-catalog/plugins/storage/fs.html#further-details
 default-storage-provider: fs
-local-storage-prefix: $MYSCRATCH/atol-test-assembly/snakemake
+local-storage-prefix: $MYSCRATCH/atol_test_assembly/.snakemake
 shared-fs-usage:
   - persistence
   - software-deployment

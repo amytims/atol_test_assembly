@@ -73,6 +73,9 @@ rule format_config_file:
         hic_reads=Path("results", "reads", "hic.cram"),
     output:
         rendered_yaml=Path("results", "config", "sangertol_genomeassembly_params.yaml"),
+    params:
+        pacbio_reads = lambda wildcards: [Path(x) for x in input.pacbio_reads)],
+        hic_reads = lambda wildcards: [Path(x) for x in input.hic_reads)],
     run:
         with open(input.sanger_config_template) as f:
             template = Template(f.read())
@@ -83,9 +86,11 @@ rule format_config_file:
             mito_species=mito_species,
             mito_min_length=mito_min_length,
             mito_code=mito_code,
-            pacbio_reads=[input.pacbio_reads],
-            hic_reads=[input.hic_reads],
+            pacbio_reads=params.pacbio_reads,
+            hic_reads=params.hic_reads,
         )
+        print(rendered_yaml)
+        quit(1)
         with open(output.rendered_yaml, "w") as f:
             f.write(rendered_yaml)
 

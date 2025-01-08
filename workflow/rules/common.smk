@@ -6,6 +6,12 @@ from pathlib import Path
 from functools import cache
 
 
+configfile: "config/config.yaml"
+
+
+globals().update(config)
+
+
 def get_apikey():
     apikey = os.getenv("BPI_APIKEY")
     if not apikey:

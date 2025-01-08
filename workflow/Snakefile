@@ -7,8 +7,6 @@ from pathlib import Path
 include: "rules/common.smk"
 
 
-
-
 #############
 # FUNCTIONS #
 #############
@@ -177,7 +175,9 @@ rule download_from_bpa:
     input:
         get_url,
     output:
-        Path("resources", "reads", "{readfile}"),
+        temp(Path("resources", "reads", "{readfile}")),
+    resources:
+        runtime=30,
     shell:
         "cp {input} {output}"
 

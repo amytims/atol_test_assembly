@@ -29,10 +29,10 @@ def get_container(container_name):
         raise ValueError(f"Container {container_name} not found in config.")
     my_container = containers[container_name]
     return (
-        f"{my_container["prefix"]}://"
-        f"{my_container["url"]}:"
-        f"{my_container["tag"]}"
-        )
+        f"{my_container['prefix']}://"
+        f"{my_container['url']}:"
+        f"{my_container['tag']}"
+    )
 
 
 # This is a hack. Redefine requests.get to include the Authorization header.

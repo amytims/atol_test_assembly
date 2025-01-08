@@ -112,7 +112,7 @@ rule samtools_import:
     log:
         Path("logs", "samtools_import.log"),
     resources:
-        time=120,
+        runtime=120,
     container:
         get_container("samtools")
     shell:
@@ -141,7 +141,7 @@ rule pigz:
         Path("results", "reads", "ccs_reads.fasta.gz"),
     threads: 8
     resources:
-        time=120,
+        runtime=120,
     container:
         get_container("pigz")
     shell:
@@ -158,7 +158,7 @@ rule samtools_fasta:
     log:
         Path("logs", "samtools_fasta.log"),
     resources:
-        time=120,
+        runtime=120,
     container:
         get_container("samtools")
     shell:

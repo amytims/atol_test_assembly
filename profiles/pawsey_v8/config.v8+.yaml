@@ -36,8 +36,8 @@ singularity-args: "-B $PWD,$TMPDIR,/scratch \
   -H $(mktemp -d) \
   --pwd $PWD \
   --containall --cleanenv --writable-tmpfs"
-singularity-prefix: $SINGULARITY_CACHEDIR
-apptainer-prefix: $SINGULARITY_CACHEDIR
+singularity-prefix: $SINGULARITY_CACHEDIR/library
+apptainer-prefix: $SINGULARITY_CACHEDIR/library
 # see https://snakemake.github.io/snakemake-plugin-catalog/plugins/storage/fs.html#further-details
 default-storage-provider: fs
 local-storage-prefix: $MYSCRATCH/atol_test_assembly/.snakemake

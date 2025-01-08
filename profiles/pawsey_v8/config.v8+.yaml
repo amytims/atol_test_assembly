@@ -1,0 +1,46 @@
+---
+executor: cluster-generic
+cluster-generic-submit-cmd:
+  mkdir -p slurm_logs/{rule} &&
+  sbatch
+  --time={resources.time}
+  {resources.partitionFlag}
+  --cpus-per-task={threads}
+  --mem={resources.mem_mb}
+  --job-name=smk-{rule}
+  --output=slurm_logs/{rule}/{rule}-%j.out
+  --parsable
+  # --gres={resources.gres}         # enable for GPU
+cluster-generic-status-cmd: status-sacct-robust.sh
+cluster-generic-cancel-cmd: scancel
+default-resources:
+  - partitionFlag=""
+  - mem_mb=4000
+  - time=5
+  # - gres=' '         # enable for GPU
+restart-times: 0
+max-jobs-per-second: 50
+max-status-checks-per-second: 10
+local-cores: 2
+cores: 50
+latency-wait: 60
+jobs: 128
+keep-going: true
+keep-storage-local-copies: true
+rerun-incomplete: true
+printshellcmds: true
+use-singularity: true
+use-conda: False
+singularity-args: "-B $PWD,$TMPDIR,/data \
+  --nv \
+  -H $(mktemp -d) \
+  --pwd $PWD \
+  --containall --cleanenv --writable-tmpfs"
+# see https://snakemake.github.io/snakemake-plugin-catalog/plugins/storage/fs.html#further-details
+default-storage-provider: fs
+local-storage-prefix: $MYSCRATCH/atol-test-assembly/snakemake
+shared-fs-usage:
+  - persistence
+  - software-deployment
+  - sources
+  - source-cache

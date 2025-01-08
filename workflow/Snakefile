@@ -74,8 +74,8 @@ rule format_config_file:
     output:
         rendered_yaml=Path("results", "config", "sangertol_genomeassembly_params.yaml"),
     params:
-        pacbio_reads = lambda wildcards: [Path(x) for x in input.pacbio_reads)],
-        hic_reads = lambda wildcards: [Path(x) for x in input.hic_reads)],
+        pacbio_reads=lambda wildcards, input: list(Path(x) for x in input.pacbio_reads),
+        hic_reads=lambda wildcards, input: list(Path(x) for x in input.hic_reads),
     run:
         with open(input.sanger_config_template) as f:
             template = Template(f.read())

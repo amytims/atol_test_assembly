@@ -15,6 +15,8 @@ module load nextflow/24.04.3
 # Application specific commands:
 set -eux
 
+source /software/projects/pawsey1132/tharrop/atol_test_assembly/venv/bin/activate
+
 printf "TMPDIR: %s\n" "${TMPDIR}"
 
 if [ -z "${SINGULARITY_CACHEDIR}" ]; then

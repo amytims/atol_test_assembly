@@ -9,8 +9,8 @@
 
 # Dependencies
 module load python/3.11.6
-module load singularity/4.1.0-nohost
 module load nextflow/24.04.3
+module load singularity/4.1.0-nohost
 
 unset SBATCH_EXPORT
 

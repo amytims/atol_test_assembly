@@ -76,21 +76,10 @@ rule format_config_file:
     params:
         pacbio_reads=[Path("results", "reads", "ccs_reads.fasta.gz")],
         hic_reads=[Path("results", "reads", "hic.cram")],
-    run:
-        with open(input.sanger_config_template) as f:
-            template = Template(f.read())
-        rendered_yaml = template.render(
-            dataset_id=dataset_id,
-            hic_motif=hic_motif,
-            busco_lineage=busco_lineage,
-            mito_species=mito_species,
-            mito_min_length=mito_min_length,
-            mito_code=mito_code,
-            pacbio_reads=params.pacbio_reads,
-            hic_reads=params.hic_reads,
-        )
-        with open(output.rendered_yaml, "w") as f:
-            f.write(rendered_yaml)
+    container:
+        get_container("ncbi-datasets-pylib")
+    script:
+        "scripts/format_config_file.py"
 
 
 # Combine Hi-C reads as follows: contains the list (-reads) of the HiC reads in

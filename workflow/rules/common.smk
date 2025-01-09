@@ -2,7 +2,6 @@
 
 import requests
 import os
-from pathlib import Path
 from functools import cache
 
 
@@ -10,6 +9,7 @@ configfile: "config/config.yaml"
 
 
 globals().update(config)
+
 
 
 def get_apikey():
@@ -23,7 +23,7 @@ def get_apikey():
     return apikey
 
 
-@cache
+# @cache
 def get_container(container_name):
     if container_name not in containers:
         raise ValueError(f"Container {container_name} not found in config.")

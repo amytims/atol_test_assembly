@@ -46,3 +46,7 @@ shared-fs-usage:
   - software-deployment
   - sources
   - source-cache
+# s3
+storage-s3-endpoint-url: https://projects.pawsey.org.au
+storage-s3-access-key: $AWS_ACCESS_KEY_ID
+storage-s3-secret-key: $AWS_SECRET_ACCESS_KEY

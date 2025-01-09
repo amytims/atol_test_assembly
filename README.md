@@ -11,3 +11,4 @@ reformat them to suit the pipeline, and generate the YAML file.
 - We should be able to load the files directly from Acacia into the DToL
   workflow by configuring [S3 in
   Nexflow](https://www.nextflow.io/docs/latest/amazons3.html#s3-compatible-storage).
+- See WIP at https://github.com/TomHarrop/atol-test-profiles.

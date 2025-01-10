@@ -40,7 +40,7 @@ snakemake \
 # Pull the containers into the cache before trying to launch the workflow.
 nextflow inspect \
 	-concretize sanger-tol/genomeassembly \
-	--input s3://pawsey1132.atol.testassembly/414129_AusARG/results/config/sangertol_genomeassembly_params.yaml \
+	--input "s3://pawsey1132.atol.testassembly/414129_AusARG/results/config/sangertol_genomeassembly_params.yaml" \
 	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
 	-profile singularity,pawsey \
 	-r 0.10.0
@@ -52,7 +52,7 @@ nextflow \
 	-log "nextflow_logs/nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	run \
 	sanger-tol/genomeassembly \
-	--input s3://pawsey1132.atol.testassembly/414129_AusARG/results/config/sangertol_genomeassembly_params.yaml \
+	--input "s3://pawsey1132.atol.testassembly/414129_AusARG/results/config/sangertol_genomeassembly_params.yaml" \
 	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
 	-resume \
 	-profile singularity,pawsey \

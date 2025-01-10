@@ -20,8 +20,6 @@ data_file_dict = {
 
 rule format_config_file:
     input:
-        storage.s3(rules.samtools_import.output),
-        storage.s3(rules.samtools_fasta.output),
         sanger_config_template=local(sanger_config_template),
     output:
         rendered_yaml=add_bucket_to_path(
@@ -42,8 +40,10 @@ rule target:
     default_target: True
     localrule: True
     input:
-        storage.s3(rules.format_config_file.output.rendered_yaml),
+        storage.s3(rules.samtools_import.output),
+        storage.s3(rules.samtools_fasta.output),
+        rendered_yaml=storage.s3(rules.format_config_file.output.rendered_yaml),
     output:
         "results/sangertol_genomeassembly_params.yaml",
     shell:
-        "cp {input} {output}"
+        "cp {input.rendered_yaml} {output}"

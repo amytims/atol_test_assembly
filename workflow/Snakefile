@@ -13,7 +13,6 @@ include: "rules/samtools_fasta.smk"
 #############
 
 
-
 ########
 # MAIN #
 ########
@@ -54,18 +53,6 @@ data_file_dict = {
 #         "v5.5.0-8-gb18ec90/utils/nextflow"
 
 
-# Set up the pipeline
-
-
-
-
-
-
-###########
-# TARGETS #
-###########
-
-
 rule format_config_file:
     input:
         sanger_config_template=local(sanger_config_template),
@@ -82,3 +69,11 @@ rule format_config_file:
         get_container("ncbi-datasets-pylib")
     script:
         "scripts/format_config_file.py"
+
+
+rule target:
+    default_target: True
+    input:
+        storage.s3(rules.format_config_file.output),
+        storage.s3(rules.samtools_import.output),
+        storage.s3(rules.samtools_fasta.output),

@@ -30,6 +30,5 @@ rule samtools_fasta:
         "| "
         "samtools fasta "
         "-@{threads} "
-        "- "
-        ">> {output} "
+        "-0 {output} "
         "2> {log}"

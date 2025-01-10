@@ -36,3 +36,13 @@ rule format_config_file:
         get_container("ncbi-datasets-pylib")
     script:
         "scripts/format_config_file.py"
+
+
+rule target:
+    default_target: True
+    input:
+        storage.s3(rules.format_config_file.output.rendered_yaml),
+    output:
+        "results/sangertol_genomeassembly_params.yaml",
+    shell:
+        "cp {input} {output}"

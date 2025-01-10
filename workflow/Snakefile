@@ -114,27 +114,6 @@ rule samtools_import:
         "2>> {log} "
 
 
-rule format_config_file:
-    input:
-        sanger_config_template=local(sanger_config_template),
-    output:
-        # rendered_yaml=storage.s3(
-        #     "s3://pawsey1132.atol.testassembly/testfile.snakemake.txt"
-        # ),
-        rendered_yaml=add_bucket_to_path(
-            Path(
-                dataset_id, "results", "config", "sangertol_genomeassembly_params.yaml"
-            )
-        ),
-    params:
-        pacbio_reads=[Path("results", "reads", "ccs_reads.fasta.gz")],
-        hic_reads=[rules.samtools_import.output.cram],
-    container:
-        get_container("ncbi-datasets-pylib")
-    script:
-        "scripts/format_config_file.py"
-
-
 # Combine HiFi reads as follows:
 # contains the list (-reads) of the HiFi reads in FASTA (or gzipped FASTA)
 # format in. The pipeline implementation is based on an assumption that reads
@@ -145,7 +124,7 @@ rule pigz:
     input:
         Path("results", "reads", "ccs_reads.fasta"),
     output:
-        add_bucket_to_path(Path("results", "reads", "ccs_reads.fasta.gz")),
+        reads=add_bucket_to_path(Path("results", "reads", "ccs_reads.fasta.gz")),
     threads: 8
     resources:
         runtime=120,
@@ -192,9 +171,29 @@ rule download_from_bpa:
 ###########
 # TARGETS #
 ###########
-# rule target:
-#     default_target: True
-#     input:
-#         rules.format_config_file.output,
-#         rules.samtools_import.output,
-#         rules.pigz.output,
+
+
+rule format_config_file:
+    input:
+        sanger_config_template=local(sanger_config_template),
+    output:
+        rendered_yaml=add_bucket_to_path(
+            Path(
+                dataset_id, "results", "config", "sangertol_genomeassembly_params.yaml"
+            )
+        ),
+    params:
+        pacbio_reads=[rules.pigz.output.reads],
+        hic_reads=[rules.samtools_import.output.cram],
+    container:
+        get_container("ncbi-datasets-pylib")
+    script:
+        "scripts/format_config_file.py"
+
+
+rule target:
+    default_target: True
+    input:
+        storage.s3(rules.samtools_import.output),
+        storage.s3(rules.samtools_import.output),
+        storage.s3(rules.pigz.output),

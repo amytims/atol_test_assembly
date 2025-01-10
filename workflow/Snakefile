@@ -1,21 +1,9 @@
 #!/usr/bin/env python3
 
-from jinja2 import Template
-
 
 include: "rules/common.smk"
 include: "rules/samtools_import.smk"
 include: "rules/samtools_fasta.smk"
-
-
-#############
-# FUNCTIONS #
-#############
-
-
-########
-# MAIN #
-########
 
 
 # this is from the bpa_dataportal_downloads project
@@ -30,31 +18,10 @@ data_file_dict = {
 }
 
 
-#########
-# RULES #
-#########
-
-# TARGET IS AT THE END
-
-
-# # Run the pipeline
-# rule sanger_tol_genomeassembly:
-#     input:
-#         input=Path(outdir, "config", "sangertol_genomeassembly_params.yaml"),
-#     output:
-#         report="results/multiqc/broadPeak/multiqc_report.html",
-#     params:
-#         pipeline="sanger-tol/genomeassembly",
-#         revision="0.10.0",
-#         profile=["singularity", "spartan"],
-#         outdir=lambda wildcards, output: str(Path(output.report).parents[-2]),
-#     handover: True
-#     wrapper:
-#         "v5.5.0-8-gb18ec90/utils/nextflow"
-
-
 rule format_config_file:
     input:
+        storage.s3(rules.samtools_import.output),
+        storage.s3(rules.samtools_fasta.output),
         sanger_config_template=local(sanger_config_template),
     output:
         rendered_yaml=add_bucket_to_path(
@@ -69,11 +36,3 @@ rule format_config_file:
         get_container("ncbi-datasets-pylib")
     script:
         "scripts/format_config_file.py"
-
-
-rule target:
-    default_target: True
-    input:
-        storage.s3(rules.format_config_file.output),
-        storage.s3(rules.samtools_import.output),
-        storage.s3(rules.samtools_fasta.output),

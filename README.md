@@ -3,6 +3,10 @@
 Test an assembly using the sanger-tol pipeline. Basically download the reads,
 reformat them to suit the pipeline, and generate the YAML file.
 
+## To do:
+
+1. Check the hashes of the downloaded files
+
 ## Findings so far
 
 We download the reads from BPA, process them, and generate a config file on

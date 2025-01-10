@@ -2,7 +2,8 @@
 
 #SBATCH --job-name=atol_test
 #SBATCH --time=1-00
-#SBATCH --ntasks=2
+#SBATCH --cpus-per-task=2
+#SBATCH --ntasks=1
 #SBATCH --mem=8g
 #SBATCH --output=sm.slurm.out
 #SBATCH --error=sm.slurm.err

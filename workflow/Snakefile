@@ -4,6 +4,8 @@ from jinja2 import Template
 
 
 include: "rules/common.smk"
+include: "rules/samtools_import.smk"
+include: "rules/samtools_fasta.smk"
 
 
 #############
@@ -11,34 +13,13 @@ include: "rules/common.smk"
 #############
 
 
-def add_bucket_to_path(path):
-    if not isinstance(path, Path):
-        raise ValueError("path must be a Path object")
-    else:
-        path_string = str(path.as_posix())
-        output_path = storage.s3(f"{output_bucket}/{path_string}")
-        return output_path
-
-
-def get_hifi_readfiles(wildcards):
-    return [
-        Path("resources", "reads", filename)
-        for filename, url in data_file_dict.items()
-        if filename.endswith(".ccs.bam")
-    ]
-
-
-def get_url(wildcards):
-    my_url = data_file_dict[wildcards.readfile]
-    return storage.http(my_url)
-
 
 ########
 # MAIN #
 ########
 
 
-# this is from teh bpa_dataportal_downloads project
+# this is from the bpa_dataportal_downloads project
 # results of a search for query = {"sample_id": '102.100.100/411655'}
 data_file_dict = {
     "414129_AusARG_AGRF_DA235386.subreads.bam": "https://data.bioplatforms.com/dataset/bpa-ausarg-pacbio-hifi-414129-da235386/resource/f28fe709744235efc0da895975c68f6f/download/414129_AusARG_AGRF_DA235386.subreads.bam",
@@ -76,96 +57,8 @@ data_file_dict = {
 # Set up the pipeline
 
 
-# Combine Hi-C reads as follows: contains the list (-reads) of the HiC reads in
-# the indexed CRAM format. There is a suggested method here:
-# https://pipelines.tol.sanger.ac.uk/curationpretext/1.0.1/usage
-# (Current attempt: don't include the SAM tags. See details at URL.)
-rule samtools_import:
-    input:
-        r1=Path(
-            "resources",
-            "reads",
-            "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R1_001.fastq.gz",
-        ),
-        r2=Path(
-            "resources",
-            "reads",
-            "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R2_001.fastq.gz",
-        ),
-    output:
-        cram=add_bucket_to_path(Path(dataset_id, "results", "reads", "hic.cram")),
-        index=add_bucket_to_path(Path(dataset_id, "results", "reads", "hic.cram.crai")),
-    log:
-        Path("logs", "samtools_import.log"),
-    resources:
-        runtime=120,
-    container:
-        get_container("samtools")
-    shell:
-        "samtools import "
-        "-@{threads} "
-        "{input.r1} "
-        "{input.r2} "
-        "-o {output.cram} "
-        "2> {log} "
-        "&& "
-        "samtools index "
-        "{output.cram} "
-        "2>> {log} "
 
 
-# Combine HiFi reads as follows:
-# contains the list (-reads) of the HiFi reads in FASTA (or gzipped FASTA)
-# format in. The pipeline implementation is based on an assumption that reads
-# have gone through adapter/barcode checks.
-
-
-rule pigz:
-    input:
-        Path("results", "reads", "ccs_reads.fasta"),
-    output:
-        reads=add_bucket_to_path(Path(dataset_id, "results", "reads", "ccs_reads.fasta.gz")),
-    threads: 8
-    resources:
-        runtime=120,
-    container:
-        get_container("pigz")
-    shell:
-        "pigz -9 "
-        "--processes {threads} "
-        "< {input} > {output}"
-
-
-rule samtools_fasta:
-    input:
-        get_hifi_readfiles,
-    output:
-        pipe(Path("results", "reads", "ccs_reads.fasta")),
-    log:
-        Path("logs", "samtools_fasta.log"),
-    resources:
-        runtime=120,
-    container:
-        get_container("samtools")
-    shell:
-        "samtools cat "
-        "{input} "
-        "| "
-        "samtools fasta "
-        "- "
-        ">> {output} "
-        "2> {log}"
-
-
-rule download_from_bpa:
-    input:
-        get_url,
-    output:
-        temp(Path("resources", "reads", "{readfile}")),
-    resources:
-        runtime=30,
-    shell:
-        "cp {input} {output}"
 
 
 ###########
@@ -183,17 +76,9 @@ rule format_config_file:
             )
         ),
     params:
-        pacbio_reads=[rules.pigz.output.reads],
+        pacbio_reads=[rules.samtools_fasta.output.reads],
         hic_reads=[rules.samtools_import.output.cram],
     container:
         get_container("ncbi-datasets-pylib")
     script:
         "scripts/format_config_file.py"
-
-
-rule target:
-    default_target: True
-    input:
-        storage.s3(rules.format_config_file.output),
-        storage.s3(rules.samtools_import.output),
-        storage.s3(rules.pigz.output),

@@ -11,6 +11,14 @@ configfile: "config/config.yaml"
 globals().update(config)
 
 
+def add_bucket_to_path(path):
+    if not isinstance(path, Path):
+        raise ValueError("path must be a Path object")
+    else:
+        path_string = str(path.as_posix())
+        output_path = storage.s3(f"{output_bucket}/{path_string}")
+        return output_path
+
 
 def get_apikey():
     apikey = os.getenv("BPI_APIKEY")
@@ -35,6 +43,11 @@ def get_container(container_name):
     )
 
 
+def get_url(wildcards):
+    my_url = data_file_dict[wildcards.readfile]
+    return storage.http(my_url)
+
+
 # This is a hack. Redefine requests.get to include the Authorization header.
 # snakemake_storage_plugin_http only supports predifined AuthBase classes, see
 # https://github.com/snakemake/snakemake-storage-plugin-http/issues/27
@@ -49,3 +62,14 @@ def requests_get_with_auth_header(url, **kwargs):
 
 
 requests.get = requests_get_with_auth_header
+
+
+rule download_from_bpa:
+    input:
+        get_url,
+    output:
+        temp(Path("resources", "reads", "{readfile}")),
+    resources:
+        runtime=lambda wildcards, attempt: int(30 * attempt),
+    shell:
+        "cp {input} {output}"

@@ -194,6 +194,6 @@ rule format_config_file:
 rule target:
     default_target: True
     input:
-        storage.s3(rules.samtools_import.output),
+        storage.s3(rules.format_config_file.output),
         storage.s3(rules.samtools_import.output),
         storage.s3(rules.pigz.output),

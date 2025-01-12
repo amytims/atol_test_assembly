@@ -43,7 +43,7 @@ nextflow inspect \
 	--input results/sangertol_genomeassembly_params.yaml \
 	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
 	-profile singularity,pawsey \
-	-r 0.10.0
+	-r 115b833
 
 # Note, it's tempting to use the apptainer profile, but the nf-core (and some
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
@@ -56,4 +56,4 @@ nextflow \
 	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
 	-resume \
 	-profile singularity,pawsey \
-	-r 0.10.0
+	-r 115b833

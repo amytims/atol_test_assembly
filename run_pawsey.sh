@@ -38,6 +38,9 @@ snakemake \
 	--local-cores 2
 
 # Pull the containers into the cache before trying to launch the workflow.
+# Using the latest commit to dev because of issues with staging from s3 on
+# release 0.10.0. See
+# https://github.com/sanger-tol/genomeassembly/compare/0.10.0...dev
 nextflow inspect \
 	-concretize sanger-tol/genomeassembly \
 	--input results/sangertol_genomeassembly_params.yaml \

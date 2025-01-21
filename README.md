@@ -6,6 +6,10 @@ reformat them to suit the pipeline, and generate the YAML file.
 ## To do:
 
 1. Check the hashes of the downloaded files
+2. The [date is
+   used](https://github.com/sanger-tol/genomeassembly/blob/115b8333bba5af6a55feea711a561118c3d511d5/conf/modules.config#L13)
+   in the output folder names. This causes Nextflow to re-run tasks. It's also
+   not reproducible. Find out why this was done.
 
 ## Findings so far
 

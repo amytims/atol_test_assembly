@@ -10,6 +10,9 @@ reformat them to suit the pipeline, and generate the YAML file.
    used](https://github.com/sanger-tol/genomeassembly/blob/115b8333bba5af6a55feea711a561118c3d511d5/conf/modules.config#L13)
    in the output folder names. This causes Nextflow to re-run tasks. It's also
    not reproducible. Find out why this was done.
+   - *e.g.* every time you run the pipeline, the
+     `nf-SANGERTOL_GENOMEASSEMBLY_GENOMEASSEMBLY_GENOMESCOPE_MODEL_CAT_CAT_READS`
+     job and subsequent steps get launched.
 
 ## Findings so far
 

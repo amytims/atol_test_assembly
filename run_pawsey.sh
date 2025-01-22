@@ -30,6 +30,9 @@ fi
 export NXF_APPTAINER_CACHEDIR="${SINGULARITY_CACHEDIR}/library"
 export NXF_SINGULARITY_CACHEDIR="${SINGULARITY_CACHEDIR}/library"
 
+echo "Allocated CPUs: $SLURM_CPUS_ON_NODE"
+exit 1
+
 snakemake \
 	--profile profiles/pawsey_v8 \
 	--retries 0 \

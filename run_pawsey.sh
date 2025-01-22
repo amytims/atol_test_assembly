@@ -21,6 +21,7 @@ set -eux
 source /software/projects/pawsey1132/tharrop/atol_test_assembly/venv/bin/activate
 
 printf "TMPDIR: %s\n" "${TMPDIR}"
+printf "SLURM_CPUS_ON_NODE: %s\n" "${SLURM_CPUS_ON_NODE}"
 
 if [ -z "${SINGULARITY_CACHEDIR}" ]; then
 	export SINGULARITY_CACHEDIR=/software/projects/pawsey1132/tharrop/.singularity
@@ -30,20 +31,12 @@ fi
 export NXF_APPTAINER_CACHEDIR="${SINGULARITY_CACHEDIR}/library"
 export NXF_SINGULARITY_CACHEDIR="${SINGULARITY_CACHEDIR}/library"
 
-echo "SLURM_JOB_ID: $SLURM_JOB_ID"
-echo "SLURM_JOB_NODELIST: $SLURM_JOB_NODELIST"
-echo "SLURM_TASKS_PER_NODE: $SLURM_TASKS_PER_NODE"
-echo "SLURM_CPUS_ON_NODE: $SLURM_CPUS_ON_NODE"
-echo "SLURM_JOB_CPUS_PER_NODE: $SLURM_JOB_CPUS_PER_NODE"
-echo "SLURM_NPROCS: $SLURM_NPROCS"
-exit 1
-
 snakemake \
 	--profile profiles/pawsey_v8 \
 	--retries 0 \
 	--keep-going \
 	--cores 12 \
-	--local-cores 2
+	--local-cores "${SLURM_CPUS_ON_NODE}"
 
 # Pull the containers into the cache before trying to launch the workflow.
 # Using the latest commit to dev because of issues with staging from s3 on

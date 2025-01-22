@@ -22,8 +22,10 @@ the S3 bucket on Acacia specified in `config.yaml`. A system for naming and
 creating the S3 buckets will be needed, along the lines of
 `{pawsey_project}.atol.{unique_identifier}`.
 
-The DToL workflow can retrieve the files from Acacia and publish its results to
-Acacia.
+The DToL workflow can retrieve the read files from Acacia and publish its
+results to Acacia. Right now the config file needs to be local because the DToL
+workflow fails if the config file is stored on S3 (seems to be caused by some
+paths being modified).
 
 See https://github.com/TomHarrop/atol-test-profiles for examples of how the
 workflow managers are configured to use Acacia.

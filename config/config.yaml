@@ -32,7 +32,3 @@ containers:
     prefix: docker
     url: dfam/tetools
     tag: "1.90"
-  bbmap: 
-    prefix: docker
-    url: quay.io/biocontainers/bbmap
-    tag: 39.01--h92535d8_1

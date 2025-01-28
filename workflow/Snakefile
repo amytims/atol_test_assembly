@@ -62,6 +62,13 @@ module test_rm:
 
 
 use rule * from test_rm as test_rm_*
+
+use rule clean from test_rm as test_rm_clean with:
+    resources:
+        runtime=lambda wildcards, attempt: 720 * attempt,
+        mem_mb=lambda wildcards, attempt: 48e3 * attempt,
+
+
 use rule all from test_rm as rm_all with:
     output:
         storage.s3(

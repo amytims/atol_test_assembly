@@ -24,3 +24,15 @@ containers:
     prefix: docker
     url: quay.io/biocontainers/ncbi-datasets-pylib
     tag: 16.6.1--pyhdfd78af_0
+  funannotate:
+    prefix: docker
+    url: nextgenusfs/funannotate
+    tag: v1.8.17
+  tetools: 
+    prefix: docker
+    url: dfam/tetools
+    tag: "1.90"
+  bbmap: 
+    prefix: docker
+    url: quay.io/biocontainers/bbmap
+    tag: 39.01--h92535d8_1

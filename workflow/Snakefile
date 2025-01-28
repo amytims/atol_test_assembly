@@ -6,7 +6,7 @@ include: "rules/samtools_import.smk"
 include: "rules/samtools_fasta.smk"
 
 
-configfile: "/home/tharrop/Projects/test-module-rm/config/config.yaml"
+configfile: "config/config.yaml"
 
 
 # this is from the bpa_dataportal_downloads project

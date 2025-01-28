@@ -51,7 +51,7 @@ rule config_target:
 
 module test_rm:
     snakefile:
-        github("tomharrop/test-module-rm", path="workflow/Snakefile", tag="v0.0.1")
+        github("tomharrop/test-module-rm", path="workflow/Snakefile", tag="v0.0.2")
     config:
         {
             **config,

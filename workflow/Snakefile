@@ -6,9 +6,6 @@ include: "rules/samtools_import.smk"
 include: "rules/samtools_fasta.smk"
 
 
-configfile: "config/config.yaml"
-
-
 # this is from the bpa_dataportal_downloads project
 # results of a search for query = {"sample_id": '102.100.100/411655'}
 data_file_dict = {
@@ -58,17 +55,8 @@ module test_rm:
     config:
         {
             **config,
-            "query_genome": add_bucket_to_path(
-                Path(
-                    dataset_id,
-                    "results",
-                    "sanger_tol",
-                    "414129.hifiasm.20250123",
-                    "scaffolding",
-                    "yahs",
-                    "out.break.yahs",
-                    "out_scaffolds_final.fa",
-                )
+            "query_genome": storage.s3(
+                "s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol/414129.hifiasm.20250123/scaffolding/yahs/out.break.yahs/out_scaffolds_final.fa",
             ),
         }
 

@@ -6,6 +6,9 @@ include: "rules/samtools_import.smk"
 include: "rules/samtools_fasta.smk"
 
 
+configfile: "/home/tharrop/Projects/test-module-rm/config/config.yaml"
+
+
 # this is from the bpa_dataportal_downloads project
 # results of a search for query = {"sample_id": '102.100.100/411655'}
 data_file_dict = {
@@ -36,7 +39,7 @@ rule format_config_file:
         "scripts/format_config_file.py"
 
 
-rule target:
+rule config_target:
     default_target: True
     localrule: True
     input:
@@ -47,3 +50,27 @@ rule target:
         "results/sangertol_genomeassembly_params.yaml",
     shell:
         "cp {input.rendered_yaml} {output}"
+
+
+module test_rm:
+    snakefile:
+        "/home/tharrop/Projects/test-module-rm/workflow/Snakefile"
+    config:
+        {
+            **config,
+            "query_genome": add_bucket_to_path(
+                Path(
+                    dataset_id,
+                    "results",
+                    "sanger_tol",
+                    "414129.hifiasm.20250123",
+                    "scaffolding",
+                    "yahs",
+                    "out.break.yahs",
+                    "out_scaffolds_final.fa",
+                )
+            ),
+        }
+
+
+use rule * from test_rm as test_rm_*

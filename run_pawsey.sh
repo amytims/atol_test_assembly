@@ -36,7 +36,8 @@ snakemake \
 	--retries 0 \
 	--keep-going \
 	--cores 12 \
-	--local-cores "${SLURM_CPUS_ON_NODE}"
+	--local-cores "${SLURM_CPUS_ON_NODE}" \
+	config_target
 
 # Pull the containers into the cache before trying to launch the workflow.
 # Using the latest commit to dev because of issues with staging from s3 on
@@ -61,3 +62,12 @@ nextflow \
 	-resume \
 	-profile singularity,pawsey \
 	-r 115b833
+
+# currently the assembly output is hard-coded
+snakemake \
+	--profile profiles/pawsey_v8 \
+	--retries 0 \
+	--keep-going \
+	--cores 12 \
+	--local-cores "${SLURM_CPUS_ON_NODE}" \
+	test_rm_all

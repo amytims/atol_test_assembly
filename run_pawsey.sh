@@ -53,15 +53,15 @@ nextflow inspect \
 # Note, it's tempting to use the apptainer profile, but the nf-core (and some
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
 # 'singularity'` that prevents using the right URL with apptainer.
-nextflow \
-	-log "nextflow_logs/nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
-	run \
-	sanger-tol/genomeassembly \
-	--input results/sangertol_genomeassembly_params.yaml \
-	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
-	-resume \
-	-profile singularity,pawsey \
-	-r 115b833
+# nextflow \
+# 	-log "nextflow_logs/nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
+# 	run \
+# 	sanger-tol/genomeassembly \
+# 	--input results/sangertol_genomeassembly_params.yaml \
+# 	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
+# 	-resume \
+# 	-profile singularity,pawsey \
+# 	-r 115b833
 
 # currently the assembly output is hard-coded
 snakemake \
@@ -70,4 +70,4 @@ snakemake \
 	--keep-going \
 	--cores 12 \
 	--local-cores "${SLURM_CPUS_ON_NODE}" \
-	test_rm_all
+	rm_all

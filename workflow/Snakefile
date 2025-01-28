@@ -62,3 +62,9 @@ module test_rm:
 
 
 use rule * from test_rm as test_rm_*
+use rule all from test_rm as rm_all with:
+    output:
+        storage.s3(
+                "s3://pawsey1132.atol.testassembly/414129_AusARG/results/out_scaffolds_final.masked.fa.gz",
+            )
+

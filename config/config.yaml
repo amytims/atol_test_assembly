@@ -19,7 +19,7 @@ containers:
   pigz:
     prefix: docker
     url: quay.io/biocontainers/pigz
-    tag: 2.8
+    tag: "2.8"
   ncbi-datasets-pylib:
     prefix: docker
     url: quay.io/biocontainers/ncbi-datasets-pylib

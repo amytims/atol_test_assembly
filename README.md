@@ -13,6 +13,9 @@ reformat them to suit the pipeline, and generate the YAML file.
    - *e.g.* every time you run the pipeline, the
      `nf-SANGERTOL_GENOMEASSEMBLY_GENOMEASSEMBLY_GENOMESCOPE_MODEL_CAT_CAT_READS`
      job and subsequent steps get launched.
+3. Find outputs. The scaffolded output is at e.g.
+   `414129.hifiasm.20250123/scaffolding/yahs/out.break.yahs/out_scaffolds_final.fa`.
+   But how does this look for assemblies without HiC?
 
 ## Findings so far
 

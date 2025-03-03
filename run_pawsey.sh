@@ -39,6 +39,8 @@ snakemake \
 	--local-cores "${SLURM_CPUS_ON_NODE}" \
 	config_target
 
+exit 0
+
 # Pull the containers into the cache before trying to launch the workflow.
 # Using the latest commit to dev because of issues with staging from s3 on
 # release 0.10.0. See

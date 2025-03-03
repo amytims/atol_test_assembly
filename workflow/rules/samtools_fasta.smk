@@ -15,7 +15,7 @@ rule samtools_fasta:
         get_hifi_readfiles,
     output:
         reads=add_bucket_to_path(
-            Path(dataset_id, "results", "reads", "ccs_reads.fasta.gz")
+            Path(dataset_id, "results", "reads", "hifi", "ccs_reads.fasta.gz")
         ),
     log:
         Path("logs", "samtools_fasta.log"),

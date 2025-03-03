@@ -15,8 +15,10 @@ rule samtools_import:
             "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R2_001.fastq.gz",
         ),
     output:
-        cram=add_bucket_to_path(Path(dataset_id, "results", "reads", "hic.cram")),
-        index=add_bucket_to_path(Path(dataset_id, "results", "reads", "hic.cram.crai")),
+        cram=add_bucket_to_path(Path(dataset_id, "results", "reads", "hic", "hic.cram")),
+        index=add_bucket_to_path(
+            Path(dataset_id, "results", "reads", "hic", "hic.cram.crai")
+        ),
     log:
         Path("logs", "samtools_import.log"),
     resources:

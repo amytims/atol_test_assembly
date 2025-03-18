@@ -19,6 +19,9 @@ rule samtools_import:
         index=add_bucket_to_path(
             Path(dataset_id, "results", "reads", "hic", "hic.cram.crai")
         ),
+        flagstat=add_bucket_to_path(
+            Path(dataset_id, "results", "reads", "hic", "hic.flagstat")
+        )
     log:
         Path("logs", "samtools_import.log"),
     resources:
@@ -35,4 +38,9 @@ rule samtools_import:
         "&& "
         "samtools index "
         "{output.cram} "
+        "2>> {log} "
+        "&& "
+        "samtools flagstat "
+        "{output.cram} "
+        "> {output.flagstat} "
         "2>> {log} "

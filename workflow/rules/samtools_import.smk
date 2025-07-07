@@ -20,7 +20,7 @@ rule concatenate_hic_reads:
     log:
         Path("logs", "concatenate_hic_reads_{direction}.log"),
     resources:
-        runtime=20,
+        runtime=40,
     shell:
         "cat {input.files} > {output.merged} 2> {log}"
 

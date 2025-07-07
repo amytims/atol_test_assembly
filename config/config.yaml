@@ -6,7 +6,7 @@ busco_lineage: poales_odb10
 mito_species: Themeda triandra
 mito_min_length: 15000
 mito_code: 5
-output_bucket: "s3://pawsey1132.atol.testassembly.Themeda_triandra_106636"
+output_bucket: "s3://pawsey1132.atol.testassembly"
 containers:
   bbmap:
     prefix: docker

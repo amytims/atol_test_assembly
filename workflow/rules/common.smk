@@ -70,6 +70,6 @@ rule download_from_bpa:
     output:
         temp(Path("resources", "reads", "{readfile}")),
     resources:
-        runtime=lambda wildcards, attempt: int(30 * attempt),
+        runtime=lambda wildcards, attempt: int(60 * attempt),
     shell:
         "cp {input} {output}"

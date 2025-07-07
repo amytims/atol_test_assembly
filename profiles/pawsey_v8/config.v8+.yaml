@@ -18,7 +18,7 @@ default-resources:
   - mem_mb=4000
   - runtime=5
   # - gres=' '         # enable for GPU
-restart-times: 0
+restart-times: 1
 max-jobs-per-second: 50
 max-status-checks-per-second: 10
 local-cores: 2

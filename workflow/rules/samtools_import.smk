@@ -10,7 +10,7 @@ def get_hic_readfiles_by_direction(direction):
 rule concatenate_hic_reads:
     input:
         files=lambda wildcards: [
-            sorted(set(rules.download_from_bpa.output[0].format(readfile=filename)))
+            rules.download_from_bpa.output[0].format(readfile=filename)
             for filename, url in data_file_dict.items()
             if filename.endswith(".fastq.gz")
             and f"_{wildcards.direction}_" in filename

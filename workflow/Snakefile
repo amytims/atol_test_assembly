@@ -9,12 +9,11 @@ include: "rules/samtools_fasta.smk"
 # this is from the bpa_dataportal_downloads project
 # results of a search for query = {"sample_id": '102.100.100/411655'}
 data_file_dict = {
-    "414129_AusARG_AGRF_DA235386.subreads.bam": "https://data.bioplatforms.com/dataset/bpa-ausarg-pacbio-hifi-414129-da235386/resource/f28fe709744235efc0da895975c68f6f/download/414129_AusARG_AGRF_DA235386.subreads.bam",
-    "414129_AusARG_AGRF_DA235386.ccs.bam": "https://data.bioplatforms.com/dataset/bpa-ausarg-pacbio-hifi-414129-da235386/resource/27fc8f6c8fb9e3b462a3cdae002bd5f4/download/414129_AusARG_AGRF_DA235386.ccs.bam",
-    "414129_AusARG_AGRF_DA235337.subreads.bam": "https://data.bioplatforms.com/dataset/bpa-ausarg-pacbio-hifi-414129-da235337/resource/303068e96c58206aafd222a2cad04545/download/414129_AusARG_AGRF_DA235337.subreads.bam",
-    "414129_AusARG_AGRF_DA235337.ccs.bam": "https://data.bioplatforms.com/dataset/bpa-ausarg-pacbio-hifi-414129-da235337/resource/bdd8b8ba65c217945353138c1ba0d4be/download/414129_AusARG_AGRF_DA235337.ccs.bam",
-    "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-ausarg-hi-c-414130-hkwjjdmxy/resource/71e2e0c5384d238811bd78e54cbe0111/download/414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R2_001.fastq.gz",
-    "414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-ausarg-hi-c-414130-hkwjjdmxy/resource/796d9cd507b33eb34b3b31e4200129c7/download/414130_AusARG_BRF_HKWJJDMXY_AAGCATCG_S5_R1_001.fastq.gz",
+    "369564_LibID371564_AG_BRF_m84118_231208_115614_s4.hifi_reads.bam": "https://data.bioplatforms.com/dataset/bpa-grasslands-pacbio-hifi-371564-m84118_231208_115614_s4/resource/216c8ca75dbc6383f76cd2c9c7e40e39/download/369564_LibID371564_AG_BRF_m84118_231208_115614_s4.hifi_reads.bam",
+    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/5fb1bde2e50768d6b22aa2e00f97352b/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R1_001.fastq.gz",
+    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/31b685a72a8af749b846ee26f0191eff/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R2_001.fastq.gz",
+    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/6210ed784e097cc422f64d377a6c356b/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R2_001.fastq.gz",
+    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/80421efe3bc90ae4ecfa914bd27cd362/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R1_001.fastq.gz",
 }
 
 
@@ -63,6 +62,7 @@ module test_rm:
 
 use rule * from test_rm as test_rm_*
 
+
 use rule clean from test_rm as test_rm_clean with:
     resources:
         runtime=lambda wildcards, attempt: 720 * attempt,
@@ -72,6 +72,5 @@ use rule clean from test_rm as test_rm_clean with:
 use rule all from test_rm as rm_all with:
     output:
         storage.s3(
-                "s3://pawsey1132.atol.testassembly/414129_AusARG/results/out_scaffolds_final.masked.fa.gz",
-            )
-
+            "s3://pawsey1132.atol.testassembly/414129_AusARG/results/out_scaffolds_final.masked.fa.gz",
+        ),

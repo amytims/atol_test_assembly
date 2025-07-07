@@ -1,12 +1,12 @@
 ---
 sanger_config_template: resources/sangertol_genomeassembly_params_template.yaml.j2
-dataset_id: 414129_AusARG
+dataset_id: Themeda_triandra_106636
 hic_motif: "GATC,GANTC,CTNAG,TTAA"
-busco_lineage: tetrapoda_odb10
-mito_species: Heteronotia binoei
+busco_lineage: poales_odb10
+mito_species: Themeda triandra
 mito_min_length: 15000
 mito_code: 5
-output_bucket: "s3://pawsey1132.atol.testassembly"
+output_bucket: "s3://pawsey1132.atol.testassembly.Themeda_triandra_106636"
 containers:
   bbmap:
     prefix: docker

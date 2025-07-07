@@ -39,8 +39,6 @@ snakemake \
 	--local-cores "${SLURM_CPUS_ON_NODE}" \
 	config_target
 
-exit 0
-
 # Pull the containers into the cache before trying to launch the workflow.
 # Using the latest commit to dev because of issues with staging from s3 on
 # release 0.10.0. See
@@ -48,22 +46,24 @@ exit 0
 nextflow inspect \
 	-concretize sanger-tol/genomeassembly \
 	--input results/sangertol_genomeassembly_params.yaml \
-	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
+	--outdir s3://pawsey1132.atol.testassembly/Themeda_triandra_106636/results/sanger_tol \
 	-profile singularity,pawsey \
-	-r 115b833
+	-r 72fea70
 
 # Note, it's tempting to use the apptainer profile, but the nf-core (and some
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
 # 'singularity'` that prevents using the right URL with apptainer.
-# nextflow \
-# 	-log "nextflow_logs/nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
-# 	run \
-# 	sanger-tol/genomeassembly \
-# 	--input results/sangertol_genomeassembly_params.yaml \
-# 	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
-# 	-resume \
-# 	-profile singularity,pawsey \
-# 	-r 115b833
+nextflow \
+	-log "nextflow_logs/nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
+	run \
+	sanger-tol/genomeassembly \
+	--input results/sangertol_genomeassembly_params.yaml \
+	--outdir s3://pawsey1132.atol.testassembly/Themeda_triandra_106636/results/sanger_tol \
+	-resume \
+	-profile singularity,pawsey \
+	-r 72fea70
+
+exit 0
 
 # currently the assembly output is hard-coded
 snakemake \

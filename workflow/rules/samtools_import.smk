@@ -20,7 +20,7 @@ rule concatenate_hic_reads:
     log:
         Path("logs", "concatenate_hic_reads_{direction}.log"),
     resources:
-        runtime=40,
+        runtime=lambda wildcards, attempt: int(60 * attempt),
     shell:
         "cat {input.files} > {output.merged} 2> {log}"
 
@@ -44,7 +44,7 @@ rule samtools_import:
     log:
         Path("logs", "samtools_import.log"),
     resources:
-        runtime=120,
+        runtime=lambda wildcards, attempt: int(120 * attempt),
     container:
         get_container("samtools")
     shell:

@@ -21,7 +21,7 @@ rule samtools_fasta:
         Path("logs", "samtools_fasta.log"),
     threads: 8
     resources:
-        runtime=120,
+        runtime=lambda wildcards, attempt: int(120 * attempt),
     container:
         get_container("samtools")
     shell:

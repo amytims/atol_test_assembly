@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH --job-name=atol_test
-#SBATCH --time=1-00
+#SBATCH --time=3-00
 #SBATCH --cpus-per-task=2
 #SBATCH --ntasks=1
 #SBATCH --mem=32g
@@ -42,13 +42,14 @@ snakemake \
 # Pull the containers into the cache before trying to launch the workflow.
 # Using the latest commit to dev because of issues with staging from s3 on
 # release 0.10.0. See
-# https://github.com/sanger-tol/genomeassembly/compare/0.10.0...dev
+# https://github.com/sanger-tol/genomeassembly/compare/0.10.0...dev.
+# Also, Pawsey only has NF 24.04.3 so we can't use nf-schema@2.4.2
 nextflow inspect \
 	-concretize sanger-tol/genomeassembly \
 	--input results/sangertol_genomeassembly_params.yaml \
 	--outdir s3://pawsey1132.atol.testassembly/Themeda_triandra_106636/results/sanger_tol \
 	-profile singularity,pawsey \
-	-r 72fea70
+	-r 115b833
 
 # Note, it's tempting to use the apptainer profile, but the nf-core (and some
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
@@ -61,7 +62,7 @@ nextflow \
 	--outdir s3://pawsey1132.atol.testassembly/Themeda_triandra_106636/results/sanger_tol \
 	-resume \
 	-profile singularity,pawsey \
-	-r 72fea70
+	-r 115b833
 
 exit 0
 

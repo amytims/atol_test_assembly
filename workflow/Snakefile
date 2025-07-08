@@ -9,11 +9,11 @@ include: "rules/samtools_fasta.smk"
 # this is from the bpa_dataportal_downloads project
 # results of a search for query = {"sample_id": '102.100.100/411655'}
 data_file_dict = {
-    "369564_LibID371564_AG_BRF_m84118_231208_115614_s4.hifi_reads.bam": "https://data.bioplatforms.com/dataset/bpa-grasslands-pacbio-hifi-371564-m84118_231208_115614_s4/resource/216c8ca75dbc6383f76cd2c9c7e40e39/download/369564_LibID371564_AG_BRF_m84118_231208_115614_s4.hifi_reads.bam",
-    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/5fb1bde2e50768d6b22aa2e00f97352b/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R1_001.fastq.gz",
-    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/31b685a72a8af749b846ee26f0191eff/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L001_R2_001.fastq.gz",
-    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/6210ed784e097cc422f64d377a6c356b/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R2_001.fastq.gz",
-    "369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-grasslands-hi-c-371565-373565/resource/80421efe3bc90ae4ecfa914bd27cd362/download/369564_LibID371565_AG_BRF_HMMYTDRX3_TCAGCATC_S1_L002_R1_001.fastq.gz",
+    "396015_PP_BRF_m84118_250606_030322_s1.hifi_reads.bc2040.bam": "https://data.bioplatforms.com/dataset/bpa-pp-pacbio-hifi-396015-m84118_250606_030322_s1/resource/cae55399b815df4ebb44c7c0abaaa227/download/396015_PP_BRF_m84118_250606_030322_s1.hifi_reads.bc2040.bam",
+    "396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L002_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-pp-illumina-shortread-396015-225mwjlt1/resource/14d9ec4fbc39b1c74716f7fed2280e26/download/396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L002_R1_001.fastq.gz",  
+    "396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L002_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-pp-illumina-shortread-396015-225mwjlt1/resource/3a3d7ae18e1e98efaf644ad25f420afe/download/396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L002_R2_001.fastq.gz",
+    "396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L001_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-pp-illumina-shortread-396015-225mwjlt1/resource/82cfacab63e28af376997c287a4c8c30/download/396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L001_R2_001.fastq.gz",
+    "396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L001_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-pp-illumina-shortread-396015-225mwjlt1/resource/4f177e76eb7298f1c3afa4ce8661cb32/download/396015_LibID398420_PP_BRF_225MWJLT1_CAGTGACG_S4_L001_R1_001.fastq.gz",
 }
 
 

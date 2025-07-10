@@ -6,7 +6,7 @@ busco_lineage: tetrapoda_odb10
 mito_species: Heteronotia binoei
 mito_min_length: 15000
 mito_code: 5
-output_bucket: "s3://pawsey1132.atol.testassembly"
+output_bucket: "s3://pawsey1132.amy.testing"
 containers:
   bbmap:
     prefix: docker

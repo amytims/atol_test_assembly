@@ -48,7 +48,7 @@ rule config_target:
     shell:
         "cp {input.rendered_yaml} {output}"
 
-
+''' old code from Tom - isn't doing anything
 module test_rm:
     snakefile:
         github("tomharrop/test-module-rm", path="workflow/Snakefile", tag="v0.0.6")
@@ -75,3 +75,4 @@ use rule all from test_rm as rm_all with:
                 "s3://pawsey1132.atol.testassembly/414129_AusARG/results/out_scaffolds_final.masked.fa.gz",
             )
 
+'''

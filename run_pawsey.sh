@@ -24,7 +24,7 @@ printf "TMPDIR: %s\n" "${TMPDIR}"
 printf "SLURM_CPUS_ON_NODE: %s\n" "${SLURM_CPUS_ON_NODE}"
 
 if [ -z "${SINGULARITY_CACHEDIR}" ]; then
-	export SINGULARITY_CACHEDIR=/software/projects/pawsey1132/tharrop/.singularity
+	export SINGULARITY_CACHEDIR=/software/projects/pawsey1132/atims/.singularity
 	export APPTAINER_CACHEDIR="${SINGULARITY_CACHEDIR}"
 fi
 

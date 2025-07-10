@@ -48,7 +48,7 @@ exit 0
 nextflow inspect \
 	-concretize sanger-tol/genomeassembly \
 	--input results/sangertol_genomeassembly_params.yaml \
-	--outdir s3://pawsey1132.atol.testassembly/414129_AusARG/results/sanger_tol \
+	--outdir s3://pawsey1132.amy.testing/414129_AusARG/results/sanger_tol \
 	-profile singularity,pawsey \
 	-r 115b833
 

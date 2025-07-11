@@ -21,7 +21,7 @@ def add_bucket_to_path(path):
 
 
 def get_apikey():
-    apikey = os.getenv("BPI_APIKEY")
+    apikey = os.getenv("BPA_API_TOKEN")
     if not apikey:
         raise ValueError(
             "Set the BPI_APIKEY environment variable. "

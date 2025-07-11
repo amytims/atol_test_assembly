@@ -1,6 +1,6 @@
 ---
 sanger_config_template: resources/sangertol_genomeassembly_params_template.yaml.j2
-dataset_id: 414129_AusARG
+dataset_id: 414129_AusARG_a6f7cb6
 hic_motif: "GATC,GANTC,CTNAG,TTAA"
 busco_lineage: tetrapoda_odb10
 mito_species: Heteronotia binoei

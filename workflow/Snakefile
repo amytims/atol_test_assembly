@@ -8,12 +8,7 @@ include: "rules/samtools_fasta.smk"
 
 # this is from the bpa_dataportal_downloads project
 data_file_dict = {
-    "376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L001_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-gap-hi-c-380532-83683/resource/c5e3a3a0fce8f9bfef420a7bc460fa0c/download/376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L001_R1_001.fastq.gz",
-    "376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L001_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-gap-hi-c-380532-83683/resource/aa7349a6d79e115e46ab66c294032b0c/download/376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L001_R2_001.fastq.gz",
-    "376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L002_R1_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-gap-hi-c-380532-83683/resource/54ca03d67f7b5dee8ca5540e56e3eb15/download/376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L002_R1_001.fastq.gz",
-    "376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L002_R2_001.fastq.gz": "https://data.bioplatforms.com/dataset/bpa-gap-hi-c-380532-83683/resource/a90697df434e1376b98b6a2980dbd56c/download/376315_LibID380532_GAP_BRF_AH5TJYDRXY_CAGTCGAC_AGGCTAGT_S5_L002_R2_001.fastq.gz",
-    "376315_GAP_GWA_DA110323.ccs.bam": "https://data.bioplatforms.com/dataset/bpa-gap-pacbio-hifi-382897-da110323/resource/cbdfc4a38872e6337d6c8ed46298950f/download/376315_GAP_GWA_DA110323.ccs.bam",
-    "376315_GAP_GWA_DA110376.ccs.bam": "https://data.bioplatforms.com/dataset/bpa-gap-pacbio-hifi-380535-da110376/resource/e78cb4055e388a110fc1113b062f433f/download/376315_GAP_GWA_DA110376.ccs.bam",
+    "408025_TSI_AGRF_DA162807.ccs.bam": "https://data.bioplatforms.com/dataset/bpa-tsi-pacbio-hifi-408025-da162807/resource/8a2f6c1704e9f21bd9d7303a266a7d0b/download/408025_TSI_AGRF_DA162807.ccs.bam",
 }
 
 rule format_config_file:

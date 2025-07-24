@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=atol_test_Xanthorrhoea_johnsonii_v1
+#SBATCH --job-name=atol_test_Acanthornis_magna_v1
 #SBATCH --time=1-00
 #SBATCH --cpus-per-task=2
 #SBATCH --ntasks=1
@@ -26,8 +26,8 @@ printf "SLURM_CPUS_ON_NODE: %s\n" "${SLURM_CPUS_ON_NODE}"
 
 # parameters
 PIPELINE_VERSION="a6f7cb6"
-SOURCE_DIRNAME="Xanthorrhoea_johnsonii"
-RESULT_DIRNAME="XanthorrhoeaJohnsonii376315"
+SOURCE_DIRNAME="Acanthornis_magna"
+RESULT_DIRNAME="AcanthornisMagna408025"
 RESULT_VERSION="v1"
 
 PIPELINE_PARAMS=(

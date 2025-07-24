@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=atol_test_Heterotonia_binoei
+#SBATCH --job-name=atol_test_Xanthorrhoea_johnsonii_v1
 #SBATCH --time=1-00
 #SBATCH --cpus-per-task=2
 #SBATCH --ntasks=1
@@ -20,18 +20,29 @@ unset SBATCH_EXPORT
 # Application specific commands:
 set -eux
 
-source /software/projects/pawsey1132/atims/assembly_testing/venv/bin/activate
-
+# SLURM runner info
 printf "TMPDIR: %s\n" "${TMPDIR}"
 printf "SLURM_CPUS_ON_NODE: %s\n" "${SLURM_CPUS_ON_NODE}"
 
-# load the manual nextflow install
-export PATH="${PATH}:/software/projects/pawsey1132/atims/assembly_testing/bin"
-printf "nextflow: %s\n" "$(which nextflow)"
+# parameters
+PIPELINE_VERSION="a6f7cb6"
+SOURCE_DIRNAME="Xanthorrhoea_johnsonii"
+RESULT_DIRNAME="XanthorrhoeaJohnsonii376315"
+RESULT_VERSION="v1"
 
-# set the NXF home for plugins etc
-export NXF_HOME=/software/projects/pawsey1132/atims/assembly_testing/.nextflow
+PIPELINE_PARAMS=(
+	"--input" "results/sangertol_genomeassembly_params.yaml" 
+	"--outdir" "s3://pawsey1132.amy.testing/${RESULT_DIRNAME}/results/sanger_tol"
+    "--timestamp" "${RESULT_VERSION}" 
+	"--hifiasm_hic_on"
+	"-profile" "singularity,pawsey"
+	"-r" "${PIPELINE_VERSION}"
+)
 
+# run-specific venv
+source "/software/projects/pawsey1132/atims/assembly_testing/${SOURCE_DIRNAME}/venv/bin/activate"
+
+# apptainer setup
 if [ -z "${SINGULARITY_CACHEDIR}" ]; then
 	export SINGULARITY_CACHEDIR=/software/projects/pawsey1132/atims/.singularity
 	export APPTAINER_CACHEDIR="${SINGULARITY_CACHEDIR}"
@@ -40,7 +51,17 @@ fi
 export NXF_APPTAINER_CACHEDIR="${SINGULARITY_CACHEDIR}/library"
 export NXF_SINGULARITY_CACHEDIR="${SINGULARITY_CACHEDIR}/library"
 
-PIPELINE_VERSION="a6f7cb6"
+# load the manual nextflow install
+export PATH="${PATH}:/software/projects/pawsey1132/atims/assembly_testing/bin"
+printf "nextflow: %s\n" "$( readlink -f $( which nextflow ) )"
+
+# set the NXF home for plugins etc
+export NXF_HOME="/software/projects/pawsey1132/atims/assembly_testing/${SOURCE_DIRNAME}/.nextflow"
+export NXF_CACHE_DIR="/scratch/pawsey1132/atims/assembly_testing/${SOURCE_DIRNAME}/.nextflow"
+export NXF_WORK="${NXF_CACHE_DIR}/work"
+
+printf "NXF_HOME: %s\n" "${NXF_HOME}"
+printf "NXF_WORK: %s\n" "${NXF_WORK}"
 
 snakemake \
 	--profile profiles/pawsey_v8 \
@@ -57,30 +78,24 @@ exit 0
 # release 0.10.0. See
 # https://github.com/sanger-tol/genomeassembly/compare/0.10.0...dev
 nextflow inspect \
+	-log "nextflow_logs/nextflow_inspect.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
 	-concretize sanger-tol/genomeassembly \
-	--input results/sangertol_genomeassembly_params.yaml \
-	--outdir s3://pawsey1132.amy.testing/414129_AusARG_a6f7cb6/results/sanger_tol \
-	-profile singularity,pawsey \
-	-r "${PIPELINE_VERSION}"
+	"${PIPELINE_PARAMS[@]}"
 
 # Note, it's tempting to use the apptainer profile, but the nf-core (and some
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
 # 'singularity'` that prevents using the right URL with apptainer.
- nextflow \
- 	-log "nextflow_logs/nextflow.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
- 	run \
- 	sanger-tol/genomeassembly \
- 	--input results/sangertol_genomeassembly_params.yaml \
- 	--outdir s3://pawsey1132.amy.testing/414129_AusARG_a6f7cb6/results/sanger_tol \
- 	-resume \
- 	-profile singularity,pawsey \
- 	-r "${PIPELINE_VERSION}"
+nextflow run \
+	-log "nextflow_logs/nextflow_run.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
+	sanger-tol/genomeassembly \
+	"${PIPELINE_PARAMS[@]}" \
+	-resume 
 
 # currently the assembly output is hard-coded
-snakemake \
-	--profile profiles/pawsey_v8 \
-	--retries 0 \
-	--keep-going \
-	--cores 12 \
-	--local-cores "${SLURM_CPUS_ON_NODE}" \
-	rm_all
+#snakemake \
+#	--profile profiles/pawsey_v8 \
+#	--retries 0 \
+#	--keep-going \
+#	--cores 12 \
+#	--local-cores "${SLURM_CPUS_ON_NODE}" \
+#	rm_all

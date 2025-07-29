@@ -77,16 +77,18 @@ exit 0
 # Using the latest commit to dev because of issues with staging from s3 on
 # release 0.10.0. See
 # https://github.com/sanger-tol/genomeassembly/compare/0.10.0...dev
-nextflow inspect \
+nextflow \
 	-log "nextflow_logs/nextflow_inspect.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
+	inspect \
 	-concretize sanger-tol/genomeassembly \
 	"${PIPELINE_PARAMS[@]}"
 
 # Note, it's tempting to use the apptainer profile, but the nf-core (and some
 # sanger-tol) pipelines have a conditional `workflow.containerEngine ==
 # 'singularity'` that prevents using the right URL with apptainer.
-nextflow run \
+nextflow \
 	-log "nextflow_logs/nextflow_run.$(date +"%Y%m%d%H%M%S").${RANDOM}.log" \
+	run \
 	sanger-tol/genomeassembly \
 	"${PIPELINE_PARAMS[@]}" \
 	-resume 

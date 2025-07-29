@@ -40,8 +40,8 @@ singularity-prefix: $SINGULARITY_CACHEDIR/library
 apptainer-prefix: $SINGULARITY_CACHEDIR/library
 # see https://snakemake.github.io/snakemake-plugin-catalog/plugins/storage/fs.html#further-details
 default-storage-provider: fs
-local-storage-prefix: $MYSCRATCH/assembly_testing/Acanthornis_magna/.snakemake
-shadow-prefix: $MYSCRATCH/assembly_testing/Acanthornis_magna/.snakemake
+local-storage-prefix: $MYSCRATCH/assembly_testing/Galaxias_rostratus/.snakemake
+shadow-prefix: $MYSCRATCH/assembly_testing/Galaxias_rostratus/.snakemake
 shared-fs-usage:
   - persistence
   - software-deployment
